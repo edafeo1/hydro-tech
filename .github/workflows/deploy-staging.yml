@@ -1,0 +1,80 @@
+name: Deploy AWS staging
+
+# A deliberate manual run, after the AWS account, staging environment and
+# repository variables have been configured. This workflow does not create
+# cloud resources or change DNS.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aws-staging-deployment
+  cancel-in-progress: false
+
+jobs:
+  staging:
+    name: Deploy the selected commit to staging
+    if: github.ref == 'refs/heads/main' && vars.AWS_STAGING_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: staging
+      url: ${{ vars.AWS_STAGING_ORIGIN }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_STAGING_ROLE_ARN: ${{ vars.AWS_STAGING_ROLE_ARN }}
+      AWS_STAGING_BUCKET: ${{ vars.AWS_STAGING_BUCKET }}
+      AWS_STAGING_DISTRIBUTION_ID: ${{ vars.AWS_STAGING_DISTRIBUTION_ID }}
+      SITE_ORIGIN: ${{ vars.AWS_STAGING_ORIGIN }}
+      SITE_INDEXABLE: '0'
+    steps:
+      - name: Check out the selected source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Check staging configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          for key in AWS_REGION AWS_STAGING_ROLE_ARN AWS_STAGING_BUCKET AWS_STAGING_DISTRIBUTION_ID SITE_ORIGIN; do
+            if [ -z "${!key:-}" ]; then
+              echo "::error::Missing repository/environment variable: $key"
+              exit 1
+            fi
+          done
+          node -e "const u=new URL(process.env.SITE_ORIGIN);if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash||(u.pathname!=='/'))throw new Error('Use the HTTPS staging origin without a path or query');"
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Build and validate staging output
+        run: |
+          npm run build
+          npm run check
+      - name: Retain this staging release
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: hydrotec-staging-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Assume the scoped AWS staging role
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ env.AWS_STAGING_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: hydrotec-staging
+          role-duration-seconds: 900
+      - name: Upload assets before documents
+        shell: bash
+        run: |
+          set -euo pipefail
+          aws s3 sync dist/assets/ "s3://$AWS_STAGING_BUCKET/assets/" --cache-control 'public,max-age=60'
+          aws s3 sync dist/ "s3://$AWS_STAGING_BUCKET/" --exclude 'assets/*' --cache-control 'no-cache'
+          aws cloudfront create-invalidation --distribution-id "$AWS_STAGING_DISTRIBUTION_ID" --paths '/*'
