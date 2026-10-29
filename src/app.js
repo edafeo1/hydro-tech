@@ -202,7 +202,7 @@ if (form) {
         // Future conversion tracking can listen here. No customer details are exposed.
         window.dispatchEvent(new CustomEvent('hydrotec:enquiry-submitted', {detail:{reference:payload.reference}}));
       } catch (error) {
-        formError.textContent = error.name === 'AbortError' ? 'Sending took longer than expected. Wait a minute and retry, or contact Noxy directly. Your details are still here.' : error.message;
+        formError.textContent = error.name === 'AbortError' ? 'Sending took longer than expected. Wait a minute and retry, or contact Noxy directly. Your details are still here.' : error instanceof TypeError ? 'The connection was interrupted. Please retry, or call or email Noxy directly. Your details are still here.' : error.message;
         formError.hidden = false;
         fallback.href = $('#enquiry-mailto').href;
         fallback.hidden = false;

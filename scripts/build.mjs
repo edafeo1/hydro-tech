@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { company, services, gallery, faqs, process as stages } from '../src/content.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -8,6 +9,7 @@ const origin = (process.env.SITE_ORIGIN || 'https://hydrotec-cinema-fego.edafeo1
 const indexable = process.env.SITE_INDEXABLE === '1';
 const enquiryEndpoint = process.env.ENQUIRY_ENDPOINT || '';
 if (enquiryEndpoint && !/^https:\/\/[a-z0-9]+\.execute-api\.ap-southeast-2\.amazonaws\.com\/enquiries$/.test(enquiryEndpoint)) throw new Error('ENQUIRY_ENDPOINT must be the Sydney HTTPS enquiry API endpoint.');
+const formAssetRevision = createHash('sha256').update(await fs.readFile(path.join(root,'src/app.js'))).update(await fs.readFile(path.join(root,'src/site.css'))).digest('hex').slice(0,12);
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const asset = name => `/assets/${name}`;
 const icons = {
@@ -67,7 +69,8 @@ function schema() {
 }
 function layout(url,title,description,body,crumbs=[]) {
   const canonical=`${origin}${url}`;
-  return `<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Hydro-Tec</title><meta name="description" content="${esc(description)}"><meta name="robots" content="${indexable?'index,follow':'noindex,nofollow'}"><meta name="theme-color" content="#0c1016"><link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:site_name" content="Hydro-Tec Building Protection Group"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${origin}/assets/hero.jpg"><link rel="icon" href="/assets/emblem.png"><link rel="stylesheet" href="/assets/site.css"><script src="/assets/app.js" defer></script><script type="application/ld+json">${schema()}</script></head><body>${header(url)}<main id="main">${crumbs.length?breadcrumbs(crumbs):''}${body}</main>${footer()}<dialog class="lightbox" aria-label="Project photograph"><div class="lightbox-top"><p class="lightbox-caption"></p><button class="icon-button lightbox-close" type="button" aria-label="Close photo">${icon('close')}</button></div><img class="lightbox-image" src="/assets/rooftop.jpg" alt=""><div class="lightbox-bottom"><button type="button" class="icon-button" data-photo-direction="-1" aria-label="Previous photograph">${icon('left')}</button><span class="photo-count"></span><button type="button" class="icon-button" data-photo-direction="1" aria-label="Next photograph">${icon('right')}</button></div></dialog></body></html>`;
+  const assetQuery = url === '/contact/' && enquiryEndpoint ? `?v=${formAssetRevision}` : '';
+  return `<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Hydro-Tec</title><meta name="description" content="${esc(description)}"><meta name="robots" content="${indexable?'index,follow':'noindex,nofollow'}"><meta name="theme-color" content="#0c1016"><link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:site_name" content="Hydro-Tec Building Protection Group"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${origin}/assets/hero.jpg"><link rel="icon" href="/assets/emblem.png"><link rel="stylesheet" href="/assets/site.css${assetQuery}"><script src="/assets/app.js${assetQuery}" defer></script><script type="application/ld+json">${schema()}</script></head><body>${header(url)}<main id="main">${crumbs.length?breadcrumbs(crumbs):''}${body}</main>${footer()}<dialog class="lightbox" aria-label="Project photograph"><div class="lightbox-top"><p class="lightbox-caption"></p><button class="icon-button lightbox-close" type="button" aria-label="Close photo">${icon('close')}</button></div><img class="lightbox-image" src="/assets/rooftop.jpg" alt=""><div class="lightbox-bottom"><button type="button" class="icon-button" data-photo-direction="-1" aria-label="Previous photograph">${icon('left')}</button><span class="photo-count"></span><button type="button" class="icon-button" data-photo-direction="1" aria-label="Next photograph">${icon('right')}</button></div></dialog></body></html>`;
 }
 
 const pages=[];

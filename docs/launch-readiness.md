@@ -16,7 +16,7 @@ The connected website is implemented. These items determine whether it is ready 
 
 - Source repository: `edafeo1/noxy`. AWS staging is deployed in connected account `385427225795` with its existing Free account plan retained. The GitHub deployment role remains pending an organisation IAM permission issue; see `aws-staging-status.md`.
 - Domain registrar and DNS control, current hosting and existing redirects.
-- Server-delivered contact form or continued email-draft workflow, with an explicit receiving address.
+- Direct contact form is deployed to the existing business inbox. Finish mailbox verification and DKIM DNS records, then verify a labelled enquiry in the real inbox; see `enquiries.md`.
 - Privacy wording reviewed against the actual production hosting, analytics and enquiry handling.
 - Measurement requirements. No analytics or advertising scripts are included by default.
 
@@ -27,7 +27,7 @@ The connected website is implemented. These items determine whether it is ready 
 - Confirm production metadata and canonical origin.
 - Run the build and link checks for the production artifact.
 - Repeat keyboard, phone and desktop checks for the final deployed environment.
-- Exercise enquiry success, failure, validation and spam handling once the actual backend exists.
+- Backend validation, duplicate, rate-limit and failure tests pass; live failure/backup paths were checked. Complete actual successful delivery after SES verification and a current browser submission check.
 - Check page speed using the final domain and production assets, rather than claiming a score from a development preview.
 - Capture the prior deployment and DNS settings so the rollout can be reversed.
 

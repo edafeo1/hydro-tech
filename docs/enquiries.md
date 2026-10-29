@@ -4,6 +4,20 @@ The owner requested direct submission to the existing business inbox:
 **noxy@hydrotecbuildingprotectiongroup.com.au**. The previous form only prepared
 an email in the visitor's email app.
 
+## Deployed staging status
+
+- Stack: `hydrotec-enquiries`, **CREATE_COMPLETE** in connected account `385427225795`.
+- Endpoint: `https://7h65rrgqo8.execute-api.ap-southeast-2.amazonaws.com/enquiries`.
+- Function: `hydrotec-enquiries-submit`.
+- Private table: `hydrotec-enquiries-EnquiryTable-1S66UQ22U3SFG`.
+- Website: [contact page](https://d3s90nqnvv0rq0.cloudfront.net/contact/).
+- SES identity and domain DKIM are still **PENDING**. Sending is not operational
+  until verification succeeds. The live test returned HTTP 503, recorded
+  `MessageRejected` without customer content, and retained the labelled test
+  backup. It did not display a false success.
+- See [the domain validation records](domain-setup.md) and
+  [the verification snapshot](aws-enquiries-verification.json).
+
 ## How it works
 
 The AWS build sets `ENQUIRY_ENDPOINT` to the HTTP API endpoint. JavaScript validates
@@ -81,7 +95,7 @@ For AWS site builds:
 ```sh
 SITE_ORIGIN=https://d3s90nqnvv0rq0.cloudfront.net \
 SITE_INDEXABLE=0 \
-ENQUIRY_ENDPOINT=https://API_ID.execute-api.ap-southeast-2.amazonaws.com/enquiries \
+ENQUIRY_ENDPOINT=https://7h65rrgqo8.execute-api.ap-southeast-2.amazonaws.com/enquiries \
 npm run build
 npm run check
 python -m unittest discover -s tests -p test_enquiry.py

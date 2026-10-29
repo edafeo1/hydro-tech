@@ -27,6 +27,35 @@ The build/link check passed with 23 pages, 1,189 local references and 137 image 
 
 The full verification report linked below is the initial deployment snapshot; this revision updates only the two page documents and shared stylesheet. The source changes are committed alongside this record in `edafeo1/noxy`.
 
+## Direct enquiry integration — 30 October 2026
+
+The separately authorised `hydrotec-enquiries` stack is **CREATE_COMPLETE** in
+Sydney. It adds nine resources for a public HTTP API, validated Lambda submission,
+private encrypted DynamoDB backups with TTL, scoped IAM access and seven-day logs.
+The existing hosting stack, AWS account plan and live business DNS were not changed.
+
+The contact page now has a direct **Send enquiry** button configured for the API.
+Assets and the contact/privacy documents were uploaded to the existing bucket;
+CloudFront invalidation `I7JPSE9N9HVBZ8EGBH4QDE6R5K` refreshes the changed paths.
+The private backup and throttling configuration were checked on AWS. The live API
+returned HTTP 204 for preflight, 400 for missing required input and 403 for an
+unapproved origin. A labelled valid test returned HTTP 503 with SES
+`MessageRejected`, because the business identity remains unverified; it retained a
+private test backup and correctly avoided showing success.
+
+GitHub run [40931657000](https://github.com/edafeo1/noxy/actions/runs/40931657000)
+passed the site build, both CloudFormation schema checks and nine backend tests.
+Native template validation and change-set pre-deployment validation also passed.
+Security settings were manually reviewed; `cfn-guard` was not installed or run.
+Browser visual QA for this form update was unavailable; live HTTP/API and source
+checks were performed. See [the verification snapshot](aws-enquiries-verification.json).
+
+The business mailbox verification email was requested. A non-exportable ACM
+certificate for the existing root and www domain, plus SES Easy DKIM, now await
+five CNAME records at the existing DNS provider. See [exact records and cutover
+steps](domain-setup.md). No Google advertising or analytics code or campaign was
+enabled.
+
 ## Cost choices
 
 The user requested the lowest practical running cost. This release uses static S3/CloudFront hosting with no provisioned application server, database, load balancer or NAT gateway. No paid plan subscription, domain purchase, custom certificate or additional monitoring service was added.
@@ -48,7 +77,7 @@ Live HTTP checks passed for all **42 files**: every served response matched the 
 ## Remaining work
 
 - Automatic GitHub deployment: an organisation service control policy explicitly denied `iam:ListOpenIDConnectProviders`. The current deployment uses `EnableGitHubDeployment=false`; no attempt was made to override the organisation policy. The scoped GitHub role and actual workflow variables must be configured before enabling that workflow.
-- Contact enquiries currently validate and prepare an email draft. Server-delivered enquiries, sender verification and delivery monitoring remain separate work.
+- The direct enquiry backend is deployed and connected. Business-email verification, production DKIM DNS records and a successful inbox delivery test are still pending; see [enquiry operations](enquiries.md). The form does not claim success when SES rejects a message.
 - Production domain, certificate/DNS migration, redirects from old URLs, final content approvals and production indexing are outstanding.
 
 ## Reproduce the build

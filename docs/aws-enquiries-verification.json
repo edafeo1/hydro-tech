@@ -1,0 +1,152 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Australia/Brisbane",
+  "website": "https://d3s90nqnvv0rq0.cloudfront.net",
+  "stack": {
+    "name": "hydrotec-enquiries",
+    "region": "ap-southeast-2",
+    "account": "385427225795",
+    "status": "CREATE_COMPLETE",
+    "resources": 9,
+    "changeSet": "hydrotec-direct-enquiries-20261030-v1"
+  },
+  "endpoint": "https://7h65rrgqo8.execute-api.ap-southeast-2.amazonaws.com/enquiries",
+  "businessInbox": "noxy@hydrotecbuildingprotectiongroup.com.au",
+  "senderVerification": {
+    "status": "PENDING",
+    "verifiedForSending": false,
+    "requestSent": true,
+    "actualInboxDeliveryConfirmed": false
+  },
+  "privateBackup": {
+    "table": "hydrotec-enquiries-EnquiryTable-1S66UQ22U3SFG",
+    "status": "ACTIVE",
+    "encryption": "AWS-managed KMS",
+    "ttlAttribute": "expiresAt",
+    "ttlStatus": "ENABLED",
+    "enquiryDays": 30,
+    "rateCounterDays": 2,
+    "logRetentionDays": 7
+  },
+  "validation": {
+    "sitePages": 23,
+    "localReferences": 1189,
+    "imageTags": 137,
+    "backendUnitTests": 9,
+    "result": "passed",
+    "cfnLintCiRun": "https://github.com/edafeo1/noxy/actions/runs/40931657000",
+    "cfnLintVersion": "1.59.0",
+    "nativeValidateTemplate": "passed",
+    "preDeploymentValidationErrors": 0,
+    "cfnGuard": "not installed or run",
+    "browserVisualQa": "unavailable"
+  },
+  "liveApi": {
+    "preflight": 204,
+    "missingFields": 400,
+    "rejectedOrigin": 403,
+    "validDeliveryAttempt": 503,
+    "sesError": "MessageRejected",
+    "backupRetained": true,
+    "successFalselyReported": false,
+    "testReference": "HT-c51fa016-0f66-4ee2-ab00-a1f5b8bf819a"
+  },
+  "liveFiles": [
+    {
+      "path": "/assets/site.css",
+      "status": 200,
+      "bytes": 46969,
+      "sha256": "8b9ff399a5eff02bd63dbba52089b7777178237455c3299673b84325475a6f71",
+      "matches_build": true,
+      "direct_submit_button": null,
+      "api_connected": null
+    },
+    {
+      "path": "/assets/app.js",
+      "status": 200,
+      "bytes": 12766,
+      "sha256": "635a579f9de9b5356b834477e78391b3be2ba61c76f9182e9940059cc34585b2",
+      "matches_build": true,
+      "direct_submit_button": null,
+      "api_connected": null
+    },
+    {
+      "path": "/contact/",
+      "status": 200,
+      "bytes": 18521,
+      "sha256": "5e55884e075d104ecca58cc4f533bca9cddcdbd4e832c94b9fa38300c28ee1f3",
+      "matches_build": true,
+      "direct_submit_button": true,
+      "api_connected": true
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "bytes": 12592,
+      "sha256": "a288ba5962113e46f30c480f0ed4ce31c970388fd9d858c4e1d056b38993c57f",
+      "matches_build": true,
+      "direct_submit_button": null,
+      "api_connected": null
+    }
+  ],
+  "cloudFrontInvalidation": {
+    "id": "I7JPSE9N9HVBZ8EGBH4QDE6R5K",
+    "paths": 8,
+    "status": "Completed"
+  },
+  "domain": {
+    "name": "hydrotecbuildingprotectiongroup.com.au",
+    "certificateArn": "arn:aws:acm:us-east-1:385427225795:certificate/c6eb6b31-2743-4870-9e46-7d7fee12e9d9",
+    "certificateStatus": "PENDING_VALIDATION",
+    "certificateExport": "DISABLED",
+    "dnsRecordsPrepared": [
+      {
+        "purpose": "Website HTTPS",
+        "Name": "_c23738d5ce82e0b701b2bf3a22b0c16e.hydrotecbuildingprotectiongroup.com.au.",
+        "Type": "CNAME",
+        "Value": "_0e87032fe985b2dad67efee848a38e11.wzccmgtwzk.acm-validations.aws."
+      },
+      {
+        "purpose": "Website HTTPS",
+        "Name": "_83009a516770b8bfc11a4280148b7d79.www.hydrotecbuildingprotectiongroup.com.au.",
+        "Type": "CNAME",
+        "Value": "_fa9051568e5255d36d46cc0a8335d24b.wzccmgtwzk.acm-validations.aws."
+      },
+      {
+        "purpose": "Email DKIM",
+        "Name": "74pxsb26dpphkfsuzuxkza2bve7houpp._domainkey.hydrotecbuildingprotectiongroup.com.au",
+        "Type": "CNAME",
+        "Value": "74pxsb26dpphkfsuzuxkza2bve7houpp.dkim.amazonses.com"
+      },
+      {
+        "purpose": "Email DKIM",
+        "Name": "ufucvyhxuncc7zpizp7davpvc2ii2g7z._domainkey.hydrotecbuildingprotectiongroup.com.au",
+        "Type": "CNAME",
+        "Value": "ufucvyhxuncc7zpizp7davpvc2ii2g7z.dkim.amazonses.com"
+      },
+      {
+        "purpose": "Email DKIM",
+        "Name": "jyvnj26yrregntx4gqnnlfuthf7ckwpg._domainkey.hydrotecbuildingprotectiongroup.com.au",
+        "Type": "CNAME",
+        "Value": "jyvnj26yrregntx4gqnnlfuthf7ckwpg.dkim.amazonses.com"
+      }
+    ],
+    "dnsChanged": false,
+    "currentProvider": "not yet identified",
+    "route53ZoneInConnectedAccount": false
+  },
+  "advertising": {
+    "googleAdsCampaignEnabled": false,
+    "adSenseEnabled": false,
+    "googleTrackingTagInstalled": false
+  },
+  "costs": {
+    "existingAccountPlanPreserved": true,
+    "newFixedFeeSubscription": false,
+    "apiThrottleRps": 0.5,
+    "apiThrottleBurst": 2,
+    "attemptsPerIpPerHour": 5,
+    "maxEmailAttemptsPerUtcDay": 100,
+    "notes": "Usage charges apply to API, Lambda, DynamoDB, logs, KMS and SES. Rate limits are not a financial spending cap."
+  }
+}
