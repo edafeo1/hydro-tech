@@ -372,6 +372,12 @@
   .form-disclosure{font-size:11px;line-height:1.8;color:#a9bbd4;margin-top:17px}
   .form-disclosure a{text-decoration:underline;text-underline-offset:3px;color:#cbd9f2}
   .form-error{font-size:13px;color:#ffd4d4;margin-bottom:16px}
+  .enquiry-trap{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .form-submit:disabled{cursor:wait;opacity:.7}
+  .enquiry-send-status{font-size:13px;color:#c5d6ee;line-height:1.7}
+  .enquiry-fallback{display:inline-block;font-size:13px;margin-top:14px;text-decoration:underline;text-underline-offset:4px}
+  .enquiry-success h2{font-size:clamp(29px,4vw,42px);line-height:1.15;margin:18px 0}
+  .enquiry-success p{font-size:14px;line-height:1.8;margin:18px 0;overflow-wrap:anywhere}
   .enquiry-review h3{font-size:29px;margin:12px 0 18px}
   .enquiry-review>p{font-size:14px;line-height:1.8}
   .enquiry-review pre{font-family:var(--font);font-size:13px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;background:#0c1421;border:1px solid #3b506e;border-radius:6px;padding:20px;max-height:500px;overflow:auto;color:#d7e3f7;margin-top:22px}

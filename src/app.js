@@ -3,7 +3,7 @@ const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)]
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Real document links provide navigation, deep linking and browser history.
-// JavaScript adds only the menu, browsing controls and enquiry preparation.
+// JavaScript adds the menu, browsing controls and enquiry submission.
 const menuButton = $('.menu-toggle');
 const mobileMenu = $('#mobile-navigation');
 function setMenu(open) {
@@ -113,6 +113,11 @@ lightbox?.addEventListener('close', () => {
 
 const form = $('#enquiry-form');
 if (form) {
+  const endpoint = form.dataset.endpoint || '';
+  let startedAt = Date.now();
+  let submissionId = '';
+  let submissionDetails = '';
+  let sending = false;
   const params = new URLSearchParams(location.search);
   const requestedService = params.get('service');
   const serviceSelect = $('#enquiry-service');
@@ -128,8 +133,9 @@ if (form) {
   const formError = $('.form-error');
   contact.addEventListener('input', () => {contact.setCustomValidity('');formError.hidden = true;});
   let enquiryText = '';
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
+    if (sending) return;
     const data = new FormData(form);
     const preferredContact = String(data.get('contact') || '').trim();
     const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(preferredContact);
@@ -155,6 +161,63 @@ if (form) {
     const subject = `Building enquiry — ${details.suburb}${details.service ? ` — ${details.service}` : ''}`;
     $('#enquiry-preview').textContent = enquiryText;
     $('#enquiry-mailto').href = `mailto:noxy@hydrotecbuildingprotectiongroup.com.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(enquiryText)}`;
+    if (endpoint) {
+      const signature = JSON.stringify(details);
+      if (!submissionId || signature !== submissionDetails) {
+        submissionId = crypto.randomUUID();
+        submissionDetails = signature;
+      }
+      const submit = $('.form-submit', form);
+      const originalLabel = submit.innerHTML;
+      const status = $('#enquiry-send-status');
+      const fallback = $('#enquiry-fallback');
+      const abort = new AbortController();
+      const timeout = setTimeout(() => abort.abort(), 30000);
+      sending = true;
+      submit.disabled = true;
+      submit.textContent = 'Sending your enquiry…';
+      form.setAttribute('aria-busy', 'true');
+      formError.hidden = true;
+      fallback.hidden = true;
+      status.textContent = 'Sending your enquiry securely.';
+      try {
+        const result = await fetch(endpoint, {
+          method: 'POST', credentials: 'omit', signal: abort.signal,
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({...details, submissionId, startedAt, website: String(data.get('website') || '')}),
+        });
+        let payload;
+        try {payload = await result.json();} catch {payload = {};}
+        if (!result.ok || !/^HT-[a-f0-9-]{36}$/.test(payload.reference || '')) {
+          const knownError = [400,409,429,503].includes(result.status) && typeof payload.message === 'string';
+          throw new Error(knownError ? payload.message : 'We could not confirm your enquiry was sent. Please retry, or call or email Noxy directly.');
+        }
+        form.hidden = true;
+        $('.form-heading').hidden = true;
+        const success = $('#enquiry-success');
+        success.hidden = false;
+        $('#enquiry-reference').textContent = `Your reference: ${payload.reference}`;
+        success.scrollIntoView({block:'start',behavior:reducedMotion()?'instant':'smooth'});
+        $('#enquiry-success-title').focus({preventScroll:true});
+        // Future conversion tracking can listen here. No customer details are exposed.
+        window.dispatchEvent(new CustomEvent('hydrotec:enquiry-submitted', {detail:{reference:payload.reference}}));
+      } catch (error) {
+        formError.textContent = error.name === 'AbortError' ? 'Sending took longer than expected. Wait a minute and retry, or contact Noxy directly. Your details are still here.' : error.message;
+        formError.hidden = false;
+        fallback.href = $('#enquiry-mailto').href;
+        fallback.hidden = false;
+        formError.tabIndex = -1;
+        formError.focus();
+      } finally {
+        clearTimeout(timeout);
+        sending = false;
+        submit.disabled = false;
+        submit.innerHTML = originalLabel;
+        form.removeAttribute('aria-busy');
+        status.textContent = '';
+      }
+      return;
+    }
     form.hidden = true;
     const review = $('#enquiry-review');
     review.hidden = false;
@@ -180,5 +243,12 @@ if (form) {
       selection.removeAllRanges();selection.addRange(range);
       status.textContent = 'The enquiry text is selected. Copy it and paste it into your email app.';
     }
+  });
+  $('#enquiry-new')?.addEventListener('click', () => {
+    form.reset();
+    submissionId = '';submissionDetails = '';startedAt = Date.now();
+    $('#enquiry-success').hidden = true;
+    form.hidden = false;$('.form-heading').hidden = false;
+    $('#enquiry-name').focus();
   });
 }

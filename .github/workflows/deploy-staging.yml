@@ -34,6 +34,7 @@ jobs:
       AWS_STAGING_DISTRIBUTION_ID: ${{ vars.AWS_STAGING_DISTRIBUTION_ID }}
       SITE_ORIGIN: ${{ vars.AWS_STAGING_ORIGIN }}
       SITE_INDEXABLE: '0'
+      ENQUIRY_ENDPOINT: ${{ vars.AWS_ENQUIRY_ENDPOINT }}
     steps:
       - name: Check out the selected source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -43,7 +44,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for key in AWS_REGION AWS_STAGING_ROLE_ARN AWS_STAGING_BUCKET AWS_STAGING_DISTRIBUTION_ID SITE_ORIGIN; do
+          for key in AWS_REGION AWS_STAGING_ROLE_ARN AWS_STAGING_BUCKET AWS_STAGING_DISTRIBUTION_ID SITE_ORIGIN ENQUIRY_ENDPOINT; do
             if [ -z "${!key:-}" ]; then
               echo "::error::Missing repository/environment variable: $key"
               exit 1

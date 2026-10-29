@@ -33,11 +33,14 @@ python3 -m http.server 8080 --directory dist
 |---|---|
 | `src/content.mjs` | Company details, six services, gallery metadata, FAQs and process copy |
 | `src/site.css` | Shared visual system, responsive layouts, keyboard focus and reduced motion |
-| `src/app.js` | Mobile navigation, card rows, gallery filters and viewer, enquiry preparation |
+| `src/app.js` | Mobile navigation, card rows, gallery filters and viewer, enquiry submission |
 | `scripts/build.mjs` | Shared layouts, individual pages, metadata, sitemap and static build |
 | `scripts/check.mjs` | Internal links, asset references, anchors, titles, IDs and syntax checks |
 | `dist/` | Portable, deployable website |
 | `infrastructure/aws-static-site.yml` | AWS hosting template and optional scoped GitHub staging role |
+| `backend/enquiry.py` | Validated business-email delivery with private backups and abuse limits |
+| `infrastructure/aws-enquiries.json` | Generated HTTP API, Lambda, IAM and DynamoDB template |
+| `docs/enquiries.md` | Enquiry verification, operation, domain and advertising setup |
 | `docs/aws-setup.md` | First-time AWS account and GitHub staging setup |
 | `docs/aws-deployment.md` | AWS setup, deployment and production handover |
 | `docs/launch-readiness.md` | Remaining owner inputs and launch decisions |
@@ -57,9 +60,9 @@ Every service links to related services, project information and a contextual en
 
 ## Enquiries
 
-The current implementation is a working **review → email draft** flow. It validates four essentials, incorporates optional project details, shows a preview, and opens a populated email in the visitor’s email application. A copy fallback is available. It does not claim to send mail automatically, and it does not send a network request or store a visitor’s draft.
+The form supports direct delivery through a dedicated AWS HTTP API, Lambda and SES backend, with a private short-lived enquiry backup, server-side validation, duplicate detection and abuse limits. It sends to **noxy@hydrotecbuildingprotectiongroup.com.au**. See [the enquiry setup and operations guide](docs/enquiries.md) for verification, delivery status, retention and configuration.
 
-A native, server-delivered contact form is a separate production integration. The recommended AWS implementation is API Gateway + Lambda + SES, with an owner-approved destination, verified sender, server-side validation, abuse protection and delivery monitoring. This service has not been provisioned or connected.
+Set `ENQUIRY_ENDPOINT` when building for AWS. Builds without that setting retain the email-app fallback and its matching disclosure. Mailbox verification and an actual delivery test are required before declaring the direct form operational.
 
 ## Production build
 
