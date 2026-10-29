@@ -14,7 +14,7 @@ The connected website is implemented. These items determine whether it is ready 
 
 ## Production decisions
 
-- Source repository selected: `edafeo1/noxy`. Edafe's AWS account selected; real account access and the scoped deployment role still need configuration.
+- Source repository: `edafeo1/noxy`. AWS staging is deployed in connected account `385427225795` with its existing Free account plan retained. The GitHub deployment role remains pending an organisation IAM permission issue; see `aws-staging-status.md`.
 - Domain registrar and DNS control, current hosting and existing redirects.
 - Server-delivered contact form or continued email-draft workflow, with an explicit receiving address.
 - Privacy wording reviewed against the actual production hosting, analytics and enquiry handling.
@@ -23,7 +23,7 @@ The connected website is implemented. These items determine whether it is ready 
 ## Migration and final verification
 
 - Map the old `/services/*-brisbane/` and Gold Coast URLs to the appropriate new pages. Preserve useful inbound links with explicit permanent redirects at the final edge/DNS-hosting configuration.
-- Keep staging private or deliberately approve its public access; robots directives do not make a public site private.
+- Public CloudFront staging was approved and deployed with search indexing disabled. Robots directives do not make that URL private. The separate design preview retains its original private audience.
 - Confirm production metadata and canonical origin.
 - Run the build and link checks for the production artifact.
 - Repeat keyboard, phone and desktop checks for the final deployed environment.

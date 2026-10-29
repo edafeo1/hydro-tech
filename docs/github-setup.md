@@ -14,6 +14,8 @@ The workflow actions are pinned to commit SHAs verified against the official act
 
 `Deploy AWS staging` can be started manually from `main` after the required setup. It is skipped until `AWS_STAGING_ENABLED` is set to `true`. It does not create infrastructure, send contact emails, deploy production or change the business domain.
 
+Current status: AWS hosting is deployed through the connected AWS integration. The GitHub deployment workflow remains disabled, with no deployment role provisioned: an organisation policy denied the IAM provider check. See [the deployment record](aws-staging-status.md). Keep the enable switch off until the IAM issue and real deployment variables are resolved.
+
 Before enabling it:
 
 1. Use Edafe's AWS account and follow [the staging setup guide](aws-setup.md) to create the hosting stack and scoped deployment role.
@@ -32,7 +34,7 @@ Before enabling it:
 | `AWS_STAGING_DISTRIBUTION_ID` | CloudFront distribution ID from the same stack |
 | `AWS_STAGING_ORIGIN` | Exact HTTPS staging origin, with no path or query |
 
-These are configuration values; the workflow obtains short-lived AWS credentials using OIDC. No AWS access keys or account credentials are included in this project. Account ownership has been selected; the real account access, IAM role and staging variables have not been provisioned.
+These are configuration values; the workflow obtains short-lived AWS credentials using OIDC. No AWS access keys or account credentials are included in this project. Account access and hosting are now verified; the GitHub IAM role and deployment variables remain to be configured.
 
 Assets are uploaded before HTML and the previous build remains available as a workflow artifact. The upload does not delete bucket objects. This is a practical staging pipeline, not an atomic production release mechanism. The production release and rollback strategy are recorded in `aws-deployment.md` and still need to be finalised before launch.
 

@@ -2,17 +2,17 @@
 
 The website is portable static output. The included infrastructure template creates a private S3 bucket, a CloudFront distribution, signed origin access control and a small directory-index function for the real multi-page routes. It also returns the custom 404 page for missing objects.
 
-**Status:** Edafe's AWS account selected. Hosting and optional GitHub staging role are prepared; no AWS account has been accessed, resources created, domain changed or AWS deployment performed. Start with [the account setup guide](aws-setup.md).
+**Status:** staging is deployed in connected AWS account `385427225795`, region `ap-southeast-2`. The public staging URL is https://d3s90nqnvv0rq0.cloudfront.net. The existing AWS Free account plan is retained. Read [the deployment record](aws-staging-status.md) before making changes to the existing stack. Business-domain migration and automatic contact-email delivery remain outstanding.
 
 ## 1. Choose the owner and environment
 
-Use Edafe's AWS account, as requested. The numeric account and access are still to be configured. The initial staging hostname will be the generated CloudFront hostname; production hostname and domain control remain to be confirmed. Keep credentials outside this repository and chat. Use an authenticated AWS CLI profile or federation/SSO for deployment.
+Use Edafe's connected AWS account, as requested. Initial staging uses the generated CloudFront hostname; production hostname and domain control remain to be confirmed. Keep credentials outside this repository and chat. The initial deployment used the connected AWS integration; the CLI examples below require a separately authenticated CLI profile or federation/SSO session.
 
 S3 can be in `ap-southeast-2` for an Australian deployment. CloudFront is global. Review the template’s `PriceClass` against the desired edge coverage before deployment; no traffic or cost estimate has been assumed.
 
 ## 2. Create a staging distribution
 
-The console setup in `aws-setup.md` also creates the scoped GitHub role. The CLI equivalent below enables that role and creates a GitHub OIDC provider if one does not already exist. If your account already has the provider, additionally pass `ExistingGitHubOidcProviderArn=THE_EXISTING_PROVIDER_ARN`. Check the selected account with `aws sts get-caller-identity` first.
+The existing `hydrotec-staging` stack has `EnableGitHubDeployment=false`. An organisation service control policy denied `iam:ListOpenIDConnectProviders`, so the GitHub provider/role were not provisioned. The examples below show the optional IAM-enabled setup after the necessary permissions are available. If your account already has the provider, additionally pass `ExistingGitHubOidcProviderArn=THE_EXISTING_PROVIDER_ARN`. Check the selected account with `aws sts get-caller-identity` first. Do not create another hosting stack for the current site.
 
 ```bash
 aws cloudformation validate-template \

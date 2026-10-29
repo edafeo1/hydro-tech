@@ -1,0 +1,311 @@
+{
+  "summary": {
+    "origin": "https://d3s90nqnvv0rq0.cloudfront.net",
+    "verified_files": 42,
+    "verified_bytes": 3801841,
+    "html_pages": 23,
+    "custom_404": true,
+    "http_to_https": true,
+    "anonymous_s3_denied": true,
+    "all_html_noindex": true,
+    "all_content_hashes_match": true
+  },
+  "files": [
+    {
+      "path": "/404.html",
+      "status": 200,
+      "bytes": 10233,
+      "sha256_matches": true,
+      "sha256": "ccb617831aa36bbf6eab88e4a7496d1a93edeaa1a4564c3a6b63f0d3a407d603"
+    },
+    {
+      "path": "/about/",
+      "status": 200,
+      "bytes": 14919,
+      "sha256_matches": true,
+      "sha256": "59ef1be0e893235d5c752570eb90a81f49c66524c5290b7c0b1a6bd23c5bdd09"
+    },
+    {
+      "path": "/approach/",
+      "status": 200,
+      "bytes": 14775,
+      "sha256_matches": true,
+      "sha256": "86f739ae6897e2e995c34d9ec727e4e4a7897142c492e7d658bc95ccd9e66eed"
+    },
+    {
+      "path": "/assets/app.js",
+      "status": 200,
+      "bytes": 9375,
+      "sha256_matches": true,
+      "sha256": "1151343ccd435633063499b84ae36f384103d8aed6f4365abff4fdc020db9be1"
+    },
+    {
+      "path": "/assets/balcony-finished.jpg",
+      "status": 200,
+      "bytes": 191739,
+      "sha256_matches": true,
+      "sha256": "4ecabfd65e71153fb47895ffbf6c5664271b4d23de8af56924aa882de9d48121"
+    },
+    {
+      "path": "/assets/balcony-membrane.jpg",
+      "status": 200,
+      "bytes": 165899,
+      "sha256_matches": true,
+      "sha256": "e7c547ae5240d323de492f98ddd0af0ffff5415f713f9543ba0124aa0fb2bfd5"
+    },
+    {
+      "path": "/assets/balcony-screed.jpg",
+      "status": 200,
+      "bytes": 167580,
+      "sha256_matches": true,
+      "sha256": "969f1f0f34f08bf22b16ddc25673da5f3e0b58ac5166582a88ea177a369f71c1"
+    },
+    {
+      "path": "/assets/balcony-strip-out.jpg",
+      "status": 200,
+      "bytes": 136815,
+      "sha256_matches": true,
+      "sha256": "5a0d45523c831fd9b04e50bc96f8b621171746dd0c40a49e88dc2eccc5425e03"
+    },
+    {
+      "path": "/assets/balcony.jpg",
+      "status": 200,
+      "bytes": 55356,
+      "sha256_matches": true,
+      "sha256": "32890d7bd0043bd7cb3901a83943fbd1a1de5b7c22c6444e5644874ee4a7dd8b"
+    },
+    {
+      "path": "/assets/below-ground.jpg",
+      "status": 200,
+      "bytes": 67565,
+      "sha256_matches": true,
+      "sha256": "9d8c0d0a7d3c8575dbeb5268c3c01a5bcf8a8bad81ea511b4560be0650fb8517"
+    },
+    {
+      "path": "/assets/broadway-feature.jpg",
+      "status": 200,
+      "bytes": 261754,
+      "sha256_matches": true,
+      "sha256": "5e1aa5fe4fc7b3606a6cd846897169d430e1ff508ba6bf82cf7026bc882685d3"
+    },
+    {
+      "path": "/assets/emblem.png",
+      "status": 200,
+      "bytes": 30849,
+      "sha256_matches": true,
+      "sha256": "745934f6d3e0768120dbb28aa780695091b293e2bd995fa428a481a0ae6683f8"
+    },
+    {
+      "path": "/assets/facade.jpg",
+      "status": 200,
+      "bytes": 84973,
+      "sha256_matches": true,
+      "sha256": "31910781fbd2d0170c4fe2677f8cd809f1bb879f5d6ff2435cf9c56a7a9f1783"
+    },
+    {
+      "path": "/assets/hero.jpg",
+      "status": 200,
+      "bytes": 343179,
+      "sha256_matches": true,
+      "sha256": "5c661d64dbf68fe5ba6fdd04519026443fd054a0fc18db33e11d20a4bf90a70c"
+    },
+    {
+      "path": "/assets/hydro-tec-capability-statement.pdf",
+      "status": 200,
+      "bytes": 1389502,
+      "sha256_matches": true,
+      "sha256": "26648ef980f4c5310f425e6eb47c43d752321807c7ee81cafc193e6668273e79"
+    },
+    {
+      "path": "/assets/rooftop-preparation.jpg",
+      "status": 200,
+      "bytes": 79733,
+      "sha256_matches": true,
+      "sha256": "8381e0221ddfd8c242561f80016596975a6bf6e1b111442178d58e8230bd3d39"
+    },
+    {
+      "path": "/assets/rooftop.jpg",
+      "status": 200,
+      "bytes": 37836,
+      "sha256_matches": true,
+      "sha256": "ec17e5b99508651772f2488ffb1f2f5de2ec7d617967e28a7a5b8122fb4e867b"
+    },
+    {
+      "path": "/assets/site.css",
+      "status": 200,
+      "bytes": 39237,
+      "sha256_matches": true,
+      "sha256": "8ec79d5bf21c14921ee1ac812b54909512c6c18746bdc0fcdd64d19636da4633"
+    },
+    {
+      "path": "/assets/technician-screeding.jpg",
+      "status": 200,
+      "bytes": 319398,
+      "sha256_matches": true,
+      "sha256": "7b488f910b4b578acc598708a333a087499d3d1fa78ca992deaa5f1c3e5e0581"
+    },
+    {
+      "path": "/assets/walkway.jpg",
+      "status": 200,
+      "bytes": 51949,
+      "sha256_matches": true,
+      "sha256": "651c66ad5495a2a48714785e74cb605dffe5062005309bee97bc6664492bcaf8"
+    },
+    {
+      "path": "/contact/",
+      "status": 200,
+      "bytes": 17143,
+      "sha256_matches": true,
+      "sha256": "cc751b6331f715c03b3efe219f04be36545a7f9e88dba04b16fe8a349894624e"
+    },
+    {
+      "path": "/faqs/",
+      "status": 200,
+      "bytes": 17868,
+      "sha256_matches": true,
+      "sha256": "f5f47f5846a0a37f10be125df30d07e8ffa0098ce1b27b70a01a914f2c0907eb"
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "bytes": 22313,
+      "sha256_matches": true,
+      "sha256": "cdd91f4d7651ef0da59c27cdb34f3a807cea7e537e9b46e4b64ee2e235984a74"
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "bytes": 11531,
+      "sha256_matches": true,
+      "sha256": "0d3ec36218a5b21f08cc91dc70e01af277d3511d5358b5d49b25c7db0a334630"
+    },
+    {
+      "path": "/projects/broadway-on-ann/",
+      "status": 200,
+      "bytes": 14625,
+      "sha256_matches": true,
+      "sha256": "fc5a940b4ab13036199a8ac12e7d39f21e9274d3ff474f2e28bbd52631cd746f"
+    },
+    {
+      "path": "/projects/gallery/",
+      "status": 200,
+      "bytes": 17527,
+      "sha256_matches": true,
+      "sha256": "999e9331c787caa8573e8458558c09dd817bdc77bd3c03df4beb8767d8b0a279"
+    },
+    {
+      "path": "/projects/",
+      "status": 200,
+      "bytes": 17243,
+      "sha256_matches": true,
+      "sha256": "c050cc251b1abf8746100048371d1059c59a612fa27ae3ac717ae339a216d389"
+    },
+    {
+      "path": "/quality-and-warranty/",
+      "status": 200,
+      "bytes": 13260,
+      "sha256_matches": true,
+      "sha256": "ce79dcac30a393c49eb705244db8751d7c41e441f39d4886c4a0d9d17420e31c"
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "bytes": 26,
+      "sha256_matches": true,
+      "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+    },
+    {
+      "path": "/service-areas/brisbane/",
+      "status": 200,
+      "bytes": 15327,
+      "sha256_matches": true,
+      "sha256": "075e9f334186392ee2d53ffa30814ed1a04eead1ffb6d838d14d7cb26bd06dc9"
+    },
+    {
+      "path": "/service-areas/gold-coast/",
+      "status": 200,
+      "bytes": 14759,
+      "sha256_matches": true,
+      "sha256": "2b1bb8fd8b1ca820b3aae056bdd98d8c324b9b3c3675e1344a91e0ef07d6300c"
+    },
+    {
+      "path": "/service-areas/",
+      "status": 200,
+      "bytes": 12512,
+      "sha256_matches": true,
+      "sha256": "524c6dc72cfad10c4a6c6582611979cab3f9a45181f31c00bad32db87baea22f"
+    },
+    {
+      "path": "/service-areas/sunshine-coast/",
+      "status": 200,
+      "bytes": 14795,
+      "sha256_matches": true,
+      "sha256": "7f1cf02944fce038d1c77145cc241fd060a204df2334608ae887d59361c137c5"
+    },
+    {
+      "path": "/services/body-corporate-remediation/",
+      "status": 200,
+      "bytes": 18006,
+      "sha256_matches": true,
+      "sha256": "0761c8300e93b741f77ad78e542f50c8442c7d832fcfedbef124eab49c0fb875"
+    },
+    {
+      "path": "/services/facade-coatings/",
+      "status": 200,
+      "bytes": 17803,
+      "sha256_matches": true,
+      "sha256": "6735374f9be2a404c06cc038fc08a07f2be295f1f1a812a3d637e6c0af7d4c26"
+    },
+    {
+      "path": "/services/",
+      "status": 200,
+      "bytes": 16305,
+      "sha256_matches": true,
+      "sha256": "848dced0de79362f588cc02776c0e7e31014175af4a306c98a84031d619da614"
+    },
+    {
+      "path": "/services/leaking-balcony-repairs/",
+      "status": 200,
+      "bytes": 19199,
+      "sha256_matches": true,
+      "sha256": "9d8f49a864f192ffeb21fe6a3300ffd88ef4f9613ed7aaeef879a69fe0fb6b10"
+    },
+    {
+      "path": "/services/remedial-waterproofing/",
+      "status": 200,
+      "bytes": 17930,
+      "sha256_matches": true,
+      "sha256": "5df5e59b91952348596dd976e6d97ce43039777b7add80c7592797ec7d9718ca"
+    },
+    {
+      "path": "/services/rope-access/",
+      "status": 200,
+      "bytes": 17773,
+      "sha256_matches": true,
+      "sha256": "4deb2d3fc0a40b7f4e64a6758b083091326f0705d44826059ab2347b6a690039"
+    },
+    {
+      "path": "/services/screeding-to-falls/",
+      "status": 200,
+      "bytes": 17880,
+      "sha256_matches": true,
+      "sha256": "6fbd4484b367686bc1d2c6ab3caca8df6af8bf0aa5ab9ca8dab6e878dac1f8ac"
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "bytes": 1822,
+      "sha256_matches": true,
+      "sha256": "8cc0fd0c4b9888eac7b4a7074851eb9edcc060782ebc96acf1eb7b4705e1a8d9"
+    },
+    {
+      "path": "/who-we-help/",
+      "status": 200,
+      "bytes": 13528,
+      "sha256_matches": true,
+      "sha256": "e89ed59b6e3e37cfdf3e7dde8a6f1ca390e0751522d0e5218084d750114f7e34"
+    }
+  ],
+  "recorded_at": "2026-10-30T02:57:01.049695+10:00",
+  "source_commit": "e13d2f58fd5ec5eec789799738a4594828d138fc"
+}

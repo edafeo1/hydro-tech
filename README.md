@@ -4,7 +4,7 @@ A connected, cinematic website for Hydro-Tec Building Protection Group. The buil
 
 GitHub development repository: [edafeo1/noxy](https://github.com/edafeo1/noxy). See [the GitHub workflow guide](docs/github-setup.md) for automatic build checks and the separately configured AWS staging deployment.
 
-AWS will use Edafe's account. Follow [the AWS staging setup](docs/aws-setup.md) to upload the hosting template and connect the scoped GitHub deployment role. No AWS resources have been created yet.
+AWS staging is deployed at **[d3s90nqnvv0rq0.cloudfront.net](https://d3s90nqnvv0rq0.cloudfront.net)** using private S3 storage and CloudFront. See [the deployment record](docs/aws-staging-status.md) for the account, cost choices, checks and remaining integrations. The connected account remains on its existing AWS Free account plan. GitHub-to-AWS deployment is still disabled pending an organisation IAM permission issue.
 
 ## Develop
 

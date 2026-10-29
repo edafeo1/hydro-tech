@@ -1,6 +1,6 @@
 # Set up staging in your AWS account
 
-Account ownership decision: **Edafe's AWS account**, as requested. The numeric account ID and an authenticated account session have not been supplied. This guide configures staging for the private GitHub repository `edafeo1/noxy`; it does not require sharing an AWS password or access keys.
+Account ownership decision: **Edafe's AWS account**, as requested. The AWS connection verified account `385427225795`, and staging has now been deployed. See [the current deployment record](aws-staging-status.md). The guide below describes first-time setup; use the existing `hydrotec-staging` stack for this deployment rather than creating a duplicate. The current stack has `EnableGitHubDeployment=false` because the account's organisation policy denied the IAM provider check. Optional GitHub role setup requires that permission issue to be resolved first.
 
 ## 1. Sign in and download the template
 
@@ -52,7 +52,7 @@ Open [Actions → Deploy AWS staging](https://github.com/edafeo1/noxy/actions/wo
 
 Open `WebsiteUrl` and check the homepage, a service URL directly, the gallery, contact review/email-draft flow, capability PDF and an unknown URL's 404 response. The contact form still opens an email draft; automatic enquiry delivery is separate work.
 
-The business domain, certificate, DNS changes and production indexing come after staging has been checked. No AWS resources have been created by preparing this guide or committing the template.
+The business domain, certificate, DNS changes and production indexing come after staging has been checked. The existing staging resources and completed checks are recorded in `aws-staging-status.md`.
 
 ## Lifecycle and references
 
