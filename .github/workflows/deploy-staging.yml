@@ -1,7 +1,9 @@
 name: Deploy AWS staging
 
 # A deliberate manual run, after the AWS account, staging environment and
-# repository variables have been configured. This workflow does not create
+# repository variables have been configured. AWS_STAGING_ENABLED must be a
+# repository variable, since the job condition runs before environment setup.
+# This workflow does not create
 # cloud resources or change DNS.
 on:
   workflow_dispatch:

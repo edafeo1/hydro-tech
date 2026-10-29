@@ -2,17 +2,17 @@
 
 The website is portable static output. The included infrastructure template creates a private S3 bucket, a CloudFront distribution, signed origin access control and a small directory-index function for the real multi-page routes. It also returns the custom 404 page for missing objects.
 
-**Status:** template prepared for review; no AWS account has been accessed, resources created, domain changed or AWS deployment performed.
+**Status:** Edafe's AWS account selected. Hosting and optional GitHub staging role are prepared; no AWS account has been accessed, resources created, domain changed or AWS deployment performed. Start with [the account setup guide](aws-setup.md).
 
 ## 1. Choose the owner and environment
 
-Use the business’s AWS account or an explicitly agreed account. Agree on a staging hostname, production hostname, region, billing owner and access role. Keep credentials outside this repository and chat. Use an authenticated AWS CLI profile or federation/SSO for deployment.
+Use Edafe's AWS account, as requested. The numeric account and access are still to be configured. The initial staging hostname will be the generated CloudFront hostname; production hostname and domain control remain to be confirmed. Keep credentials outside this repository and chat. Use an authenticated AWS CLI profile or federation/SSO for deployment.
 
 S3 can be in `ap-southeast-2` for an Australian deployment. CloudFront is global. Review the template’s `PriceClass` against the desired edge coverage before deployment; no traffic or cost estimate has been assumed.
 
 ## 2. Create a staging distribution
 
-After account access and the deployment plan are approved:
+The console setup in `aws-setup.md` also creates the scoped GitHub role. The CLI equivalent below enables that role and creates a GitHub OIDC provider if one does not already exist. If your account already has the provider, additionally pass `ExistingGitHubOidcProviderArn=THE_EXISTING_PROVIDER_ARN`. Check the selected account with `aws sts get-caller-identity` first.
 
 ```bash
 aws cloudformation validate-template \
@@ -22,7 +22,9 @@ aws cloudformation validate-template \
 aws cloudformation deploy \
   --template-file infrastructure/aws-static-site.yml \
   --stack-name hydrotec-staging \
-  --region ap-southeast-2
+  --region ap-southeast-2 \
+  --capabilities CAPABILITY_IAM \
+  --parameter-overrides EnableGitHubDeployment=true
 
 aws cloudformation describe-stacks \
   --stack-name hydrotec-staging \
@@ -32,7 +34,7 @@ aws cloudformation describe-stacks \
 
 The staging distribution is publicly reachable through its generated hostname once files are uploaded. The bucket remains private. Use the current private review preview until a publicly reachable staging environment is authorised. Search exclusion is not access control.
 
-The template retains the versioned S3 bucket when a stack is deleted. Any later deletion of retained resources is a separate deliberate action.
+The template retains the versioned S3 bucket and any GitHub OIDC provider it creates when a stack is deleted. Any later deletion of retained resources is a separate deliberate action. Reuse an existing or retained provider ARN on subsequent stack creation.
 
 ## 3. Build for the selected origin
 
@@ -72,7 +74,7 @@ Before replacing the email-draft flow, agree on the receiving address and handli
 
 ## 6. Move source and automate releases
 
-The source already has a reproducible build and a meaningful link/asset check. When the desired GitHub repository is available, add CI that runs `npm run build` and `npm run check`, publishes a review build and deploys the approved commit. Prefer GitHub OIDC with a narrowly scoped AWS role over storing long-lived access keys. Repository/account bindings must be filled with the real account details; none are fabricated here.
+The source is in `edafeo1/noxy` with passing build/link CI and a manual staging deployment workflow. The hosting template can create its narrowly scoped OIDC role. Follow `aws-setup.md` to connect the real stack outputs and restrict the GitHub `staging` environment to `main`. No long-lived AWS access keys are required. The staging enable switch must be a repository variable; the resource variables may be environment variables. Production rollout is not configured by this workflow.
 
 ## Official references
 

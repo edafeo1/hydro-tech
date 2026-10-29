@@ -14,7 +14,7 @@ The connected website is implemented. These items determine whether it is ready 
 
 ## Production decisions
 
-- Business-owned source repository and AWS account/access role.
+- Source repository selected: `edafeo1/noxy`. Edafe's AWS account selected; real account access and the scoped deployment role still need configuration.
 - Domain registrar and DNS control, current hosting and existing redirects.
 - Server-delivered contact form or continued email-draft workflow, with an explicit receiving address.
 - Privacy wording reviewed against the actual production hosting, analytics and enquiry handling.

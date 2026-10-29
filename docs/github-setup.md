@@ -6,6 +6,8 @@ Target repository: **edafeo1/noxy**. The existing repository licence is preserve
 
 `Build and validate website` runs on pushes, pull requests and manual runs. It uses Node.js 24 to build all documents, checks local links, assets, anchors, metadata and JavaScript syntax, then retains the static output for seven days. There are no package dependencies to install, so the workflow does not run `npm ci` or rely on a nonexistent lockfile.
 
+It also validates the AWS resource template with `cfn-lint` 1.59.0 in a temporary Python virtual environment. This checks the template without an AWS account or creating resources; an authenticated AWS validation and an actual staging deployment are still required.
+
 The workflow actions are pinned to commit SHAs verified against the official action repositories. Update those pins deliberately when updating the workflow.
 
 ## AWS staging workflow
@@ -14,23 +16,23 @@ The workflow actions are pinned to commit SHAs verified against the official act
 
 Before enabling it:
 
-1. Choose the AWS account and create the staging stack from the hosting template.
+1. Use Edafe's AWS account and follow [the staging setup guide](aws-setup.md) to create the hosting stack and scoped deployment role.
 2. Configure a GitHub `staging` environment with the desired reviewer rules.
-3. Configure a narrowly scoped IAM role trusted through GitHub OIDC. Limit its trust to the actual repository and `staging` environment: `repo:edafeo1/noxy:environment:staging`, with audience `sts.amazonaws.com`.
+3. Configure the role's exact OIDC subject and audience. The default subject for this new repository is `repo:edafeo1@20019420/noxy@1438595013:environment:staging`, with audience `sts.amazonaws.com`. This follows GitHub's immutable-ID format for repositories created after 15 July 2026; if a custom subject has been configured, use its exact value. The hosting template supplies the documented default.
 4. Grant that role only the required S3 listing/upload permissions for the staging bucket and CloudFront invalidation access for its staging distribution. Keep production resources outside the role’s scope.
-5. Set the real repository/environment variables below.
+5. Set the real repository Actions variables below. `AWS_STAGING_ENABLED` must be a repository variable because the job condition is evaluated before environment variables load. The setup guide uses repository variables consistently for all values.
 6. Manually run the workflow and verify the deployed pages and enquiry behaviour.
 
 | Variable | Actual value to provide |
 |---|---|
-| `AWS_STAGING_ENABLED` | `true` after the staging setup is ready |
+| `AWS_STAGING_ENABLED` | Repository variable: `true` after the staging setup is ready |
 | `AWS_REGION` | Region of the staging bucket, for example `ap-southeast-2` |
 | `AWS_STAGING_ROLE_ARN` | Scoped IAM role ARN |
 | `AWS_STAGING_BUCKET` | Bucket name from the staging stack |
 | `AWS_STAGING_DISTRIBUTION_ID` | CloudFront distribution ID from the same stack |
 | `AWS_STAGING_ORIGIN` | Exact HTTPS staging origin, with no path or query |
 
-These are configuration values; the workflow obtains short-lived AWS credentials using OIDC. No AWS access keys or account credentials are included in this project. The IAM role, account and staging variables have not been provisioned or selected on the user’s behalf.
+These are configuration values; the workflow obtains short-lived AWS credentials using OIDC. No AWS access keys or account credentials are included in this project. Account ownership has been selected; the real account access, IAM role and staging variables have not been provisioned.
 
 Assets are uploaded before HTML and the previous build remains available as a workflow artifact. The upload does not delete bucket objects. This is a practical staging pipeline, not an atomic production release mechanism. The production release and rollback strategy are recorded in `aws-deployment.md` and still need to be finalised before launch.
 

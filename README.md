@@ -4,6 +4,8 @@ A connected, cinematic website for Hydro-Tec Building Protection Group. The buil
 
 GitHub development repository: [edafeo1/noxy](https://github.com/edafeo1/noxy). See [the GitHub workflow guide](docs/github-setup.md) for automatic build checks and the separately configured AWS staging deployment.
 
+AWS will use Edafe's account. Follow [the AWS staging setup](docs/aws-setup.md) to upload the hosting template and connect the scoped GitHub deployment role. No AWS resources have been created yet.
+
 ## Develop
 
 Requirements: Node.js 22 or newer. The static build has no third-party package dependencies.
@@ -35,7 +37,8 @@ python3 -m http.server 8080 --directory dist
 | `scripts/build.mjs` | Shared layouts, individual pages, metadata, sitemap and static build |
 | `scripts/check.mjs` | Internal links, asset references, anchors, titles, IDs and syntax checks |
 | `dist/` | Portable, deployable website |
-| `infrastructure/aws-static-site.yml` | AWS CloudFormation hosting template |
+| `infrastructure/aws-static-site.yml` | AWS hosting template and optional scoped GitHub staging role |
+| `docs/aws-setup.md` | First-time AWS account and GitHub staging setup |
 | `docs/aws-deployment.md` | AWS setup, deployment and production handover |
 | `docs/launch-readiness.md` | Remaining owner inputs and launch decisions |
 

@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Hydro-Tec static website — private S3 origin, CloudFront OAC and multi-page URL routing.
+Description: Hydro-Tec static website — private S3 origin, CloudFront OAC, multi-page routing and optional GitHub staging deployment.
 
 Parameters:
   CustomDomainName:
@@ -9,7 +9,23 @@ Parameters:
   CertificateArn:
     Type: String
     Default: ''
+    AllowedPattern: '^$|^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[a-fA-F0-9-]+$'
     Description: For a custom hostname, an issued ACM certificate in us-east-1 covering that hostname.
+  EnableGitHubDeployment:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['true', 'false']
+    Description: Set true for the staging stack to create a deployment role for edafeo1/noxy.
+  ExistingGitHubOidcProviderArn:
+    Type: String
+    Default: ''
+    AllowedPattern: '^$|^arn:aws:iam::[0-9]{12}:oidc-provider/token\.actions\.githubusercontent\.com$'
+    Description: Reuse an existing GitHub OIDC provider in this AWS account. Leave empty only if none exists.
+  GitHubOidcSubject:
+    Type: String
+    Default: 'repo:edafeo1@20019420/noxy@1438595013:environment:staging'
+    AllowedPattern: '^repo:[^*?]+:environment:staging$'
+    Description: Exact OIDC subject for this repository and staging environment. Default matches this repository's immutable IDs; no wildcards.
 
 Rules:
   CustomDomainRequiresCertificate:
@@ -19,7 +35,14 @@ Rules:
         AssertDescription: Supply an issued us-east-1 ACM certificate for the custom domain.
 
 Conditions:
-  HasCustomDomain: !Not [!Equals [!Ref CustomDomainName, '']]
+  HasCustomDomain: !And
+    - !Not [!Equals [!Ref CustomDomainName, '']]
+    - !Not [!Equals [!Ref CertificateArn, '']]
+  GitHubDeploymentEnabled: !Equals [!Ref EnableGitHubDeployment, 'true']
+  HasExistingGitHubProvider: !Not [!Equals [!Ref ExistingGitHubOidcProviderArn, '']]
+  CreateGitHubProvider: !And
+    - !Condition GitHubDeploymentEnabled
+    - !Not [!Condition HasExistingGitHubProvider]
 
 Resources:
   WebsiteBucket:
@@ -181,6 +204,64 @@ Resources:
               Bool:
                 aws:SecureTransport: false
 
+  GitHubOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Condition: CreateGitHubProvider
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sts.amazonaws.com
+      Tags:
+        - Key: Project
+          Value: hydrotec-website
+
+  GitHubStagingRole:
+    Type: AWS::IAM::Role
+    Condition: GitHubDeploymentEnabled
+    Properties:
+      Description: Upload Hydro-Tec staging files and invalidate only its CloudFront distribution.
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !If
+                - HasExistingGitHubProvider
+                - !Ref ExistingGitHubOidcProviderArn
+                - !Ref GitHubOidcProvider
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: !Ref GitHubOidcSubject
+      Policies:
+        - PolicyName: StagingWebsiteUpload
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: ListStagingBucket
+                Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource: !GetAtt WebsiteBucket.Arn
+              - Sid: UploadStagingFiles
+                Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: !Sub '${WebsiteBucket.Arn}/*'
+              - Sid: InvalidateStagingDistribution
+                Effect: Allow
+                Action: cloudfront:CreateInvalidation
+                Resource: !Sub 'arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
+      Tags:
+        - Key: Project
+          Value: hydrotec-website
+
 Outputs:
   BucketName:
     Value: !Ref WebsiteBucket
@@ -190,3 +271,11 @@ Outputs:
     Value: !GetAtt Distribution.DomainName
   WebsiteUrl:
     Value: !Sub 'https://${Distribution.DomainName}'
+  AWSRegion:
+    Value: !Ref 'AWS::Region'
+  GitHubStagingRoleArn:
+    Condition: GitHubDeploymentEnabled
+    Value: !GetAtt GitHubStagingRole.Arn
+  GitHubOidcProviderArn:
+    Condition: GitHubDeploymentEnabled
+    Value: !If [HasExistingGitHubProvider, !Ref ExistingGitHubOidcProviderArn, !Ref GitHubOidcProvider]

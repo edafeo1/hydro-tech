@@ -31,6 +31,13 @@ jobs:
         run: npm run build
       - name: Validate documents, links and assets
         run: npm run check
+      - name: Validate the AWS infrastructure template
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/hydrotec-cfn-validation"
+          "$RUNNER_TEMP/hydrotec-cfn-validation/bin/python" -m pip install --disable-pip-version-check --quiet 'cfn-lint==1.59.0'
+          "$RUNNER_TEMP/hydrotec-cfn-validation/bin/cfn-lint" --template infrastructure/aws-static-site.yml
       - name: Retain the review build
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
