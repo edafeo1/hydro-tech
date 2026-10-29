@@ -11,13 +11,21 @@ Staging website: **https://d3s90nqnvv0rq0.cloudfront.net**
 | CloudFormation stack | `hydrotec-staging` — `CREATE_COMPLETE` |
 | CloudFront distribution | `ESG2EEOI9127P` — `Deployed` |
 | Storage bucket | `hydrotec-staging-websitebucket-p72h45dnfpql` |
-| Website source commit | `e13d2f58fd5ec5eec789799738a4594828d138fc` |
+| Initial website source commit | `e13d2f58fd5ec5eec789799738a4594828d138fc` |
 | Build origin | `https://d3s90nqnvv0rq0.cloudfront.net` |
 | Search indexing | Disabled (`SITE_INDEXABLE=0`) |
-| Release payload | 42 files, 3,801,841 bytes, including 23 HTML documents |
+| Initial release payload | 42 files, 3,801,841 bytes, including 23 HTML documents |
 | GitHub IAM deployment | Disabled; role/provider not created |
 
 The approved CREATE change set was `hydrotec-staging-e13d2f58-hosting`, ID `af6d46a1-69e5-48ef-99af-42f13075612d`. It added seven hosting resources: the bucket, bucket policy, distribution, origin access control, directory-index function, cache policy and response-headers policy. It did not change business DNS or provision an email backend.
+
+## Page design revision — 30 October 2026
+
+The portfolio and process pages now have distinct layouts. `/projects/` uses a cinematic Broadway on Ann feature and three gallery collections. `/approach/` uses a four-stage process map, anchored explanations and project-documentation details, with no work photographs in its main content. Existing assets are reused; no new images or hosting services were added.
+
+The build/link check passed with 23 pages, 1,189 local references and 137 image tags. Browser review covered desktop and 320, 375 and 768-pixel frames with no document overflow. The Scope jump link and the portfolio's Balconies gallery link were exercised successfully. Live HTTP checks confirmed that both changed pages and the stylesheet match the checked build; the main-content photo counts are four for Our work and zero for Our approach. CloudFront invalidation `I3OCTIO8YR53U9EI5V7N34D0JH` completed for the affected page paths and stylesheet.
+
+The full verification report linked below is the initial deployment snapshot; this revision updates only the two page documents and shared stylesheet. The source changes are committed alongside this record in `edafeo1/noxy`.
 
 ## Cost choices
 
