@@ -50,7 +50,8 @@ const template = {
       Type: 'AWS::SQS::Queue', DeletionPolicy: 'RetainExceptOnCreate', UpdateReplacePolicy: 'Retain',
       Properties: {QueueName: Sub('${AWS::StackName}-delivery.fifo'), FifoQueue: true, SqsManagedSseEnabled: true, VisibilityTimeout: 120, MessageRetentionPeriod: 345600, ReceiveMessageWaitTimeSeconds: 20, RedrivePolicy: {deadLetterTargetArn: GetAtt('DeliveryDeadLetterQueue', 'Arn'), maxReceiveCount: 5}},
     },
-    QueueTransportPolicy: {Type: 'AWS::SQS::QueuePolicy', Properties: {Queues: [Ref('DeliveryQueue'), Ref('DeliveryDeadLetterQueue')], PolicyDocument: {Version: '2012-10-17', Statement: [{Effect: 'Deny', Principal: '*', Action: 'sqs:*', Resource: [GetAtt('DeliveryQueue', 'Arn'), GetAtt('DeliveryDeadLetterQueue', 'Arn')], Condition: {Bool: {'aws:SecureTransport': 'false'}}}]}}},
+    QueueTransportPolicy: {Type: 'AWS::SQS::QueuePolicy', Properties: {Queues: [Ref('DeliveryQueue')], PolicyDocument: {Version: '2012-10-17', Statement: [{Sid: 'DenyInsecureRequests', Effect: 'Deny', Principal: '*', Action: 'sqs:*', Resource: GetAtt('DeliveryQueue', 'Arn'), Condition: {Bool: {'aws:SecureTransport': 'false'}}}]}}},
+    FailedQueueTransportPolicy: {Type: 'AWS::SQS::QueuePolicy', Properties: {Queues: [Ref('DeliveryDeadLetterQueue')], PolicyDocument: {Version: '2012-10-17', Statement: [{Sid: 'DenyInsecureRequests', Effect: 'Deny', Principal: '*', Action: 'sqs:*', Resource: GetAtt('DeliveryDeadLetterQueue', 'Arn'), Condition: {Bool: {'aws:SecureTransport': 'false'}}}]}}},
     DeliveryLogGroup: {Type: 'AWS::Logs::LogGroup', Properties: {LogGroupName: Sub('/aws/lambda/${AWS::StackName}-deliver'), RetentionInDays: 7}},
     DeliveryRole: {
       Type: 'AWS::IAM::Role', Properties: {

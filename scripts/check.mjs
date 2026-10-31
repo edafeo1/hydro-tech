@@ -83,6 +83,9 @@ for(const group of ads.campaign.adGroups){
   for(const description of group.responsiveSearchAd.descriptions)if(description.length>90)errors.push(`Ad description exceeds 90 characters: ${description}`);
 }
 const enquiryTemplate=JSON.parse(await fs.readFile(path.join(root,'infrastructure/aws-enquiries.json'),'utf8'));
+for(const resource of Object.values(enquiryTemplate.Resources).filter(r=>r.Type==='AWS::SQS::QueuePolicy')) {
+  if(resource.Properties.Queues.length!==1||resource.Properties.PolicyDocument.Statement.some(s=>Array.isArray(s.Resource)))errors.push('Each SQS resource policy must target its own single queue');
+}
 for(const statement of enquiryTemplate.Resources.AlertTopicPolicy.Properties.PolicyDocument.Statement){
   const actions=Array.isArray(statement.Action)?statement.Action:[statement.Action];
   if(actions.some(action=>action.includes('*')))errors.push('SNS resource policy requires explicit supported actions');

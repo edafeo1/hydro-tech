@@ -256,7 +256,36 @@
         "Queues": [
           {
             "Ref": "DeliveryQueue"
-          },
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "DenyInsecureRequests",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "sqs:*",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "DeliveryQueue",
+                  "Arn"
+                ]
+              },
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "FailedQueueTransportPolicy": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "Queues": [
           {
             "Ref": "DeliveryDeadLetterQueue"
           }
@@ -265,23 +294,16 @@
           "Version": "2012-10-17",
           "Statement": [
             {
+              "Sid": "DenyInsecureRequests",
               "Effect": "Deny",
               "Principal": "*",
               "Action": "sqs:*",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "DeliveryQueue",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "DeliveryDeadLetterQueue",
-                    "Arn"
-                  ]
-                }
-              ],
+              "Resource": {
+                "Fn::GetAtt": [
+                  "DeliveryDeadLetterQueue",
+                  "Arn"
+                ]
+              },
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
