@@ -207,7 +207,7 @@
     },
     "DeliveryDeadLetterQueue": {
       "Type": "AWS::SQS::Queue",
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "RetainExceptOnCreate",
       "UpdateReplacePolicy": "Retain",
       "Properties": {
         "QueueName": {
@@ -228,7 +228,7 @@
     },
     "DeliveryQueue": {
       "Type": "AWS::SQS::Queue",
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "RetainExceptOnCreate",
       "UpdateReplacePolicy": "Retain",
       "Properties": {
         "QueueName": {
@@ -501,8 +501,12 @@
         ],
         "PolicyDocument": {
           "Version": "2012-10-17",
+          "Id": {
+            "Fn::Sub": "${AWS::StackName}-alerts-policy"
+          },
           "Statement": [
             {
+              "Sid": "AllowStackCloudWatchAlarms",
               "Effect": "Allow",
               "Principal": {
                 "Service": "cloudwatch.amazonaws.com"
@@ -525,9 +529,22 @@
               }
             },
             {
+              "Sid": "DenyInsecureRequests",
               "Effect": "Deny",
               "Principal": "*",
-              "Action": "sns:*",
+              "Action": [
+                "sns:GetDataProtectionPolicy",
+                "sns:ListTagsForResource",
+                "sns:PutDataProtectionPolicy",
+                "sns:AddPermission",
+                "sns:DeleteTopic",
+                "sns:GetTopicAttributes",
+                "sns:ListSubscriptionsByTopic",
+                "sns:Publish",
+                "sns:RemovePermission",
+                "sns:SetTopicAttributes",
+                "sns:Subscribe"
+              ],
               "Resource": {
                 "Ref": "AlertTopic"
               },

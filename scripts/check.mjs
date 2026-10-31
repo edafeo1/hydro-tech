@@ -82,6 +82,11 @@ for(const group of ads.campaign.adGroups){
   for(const headline of group.responsiveSearchAd.headlines)if(headline.length>30)errors.push(`Ad headline exceeds 30 characters: ${headline}`);
   for(const description of group.responsiveSearchAd.descriptions)if(description.length>90)errors.push(`Ad description exceeds 90 characters: ${description}`);
 }
+const enquiryTemplate=JSON.parse(await fs.readFile(path.join(root,'infrastructure/aws-enquiries.json'),'utf8'));
+for(const statement of enquiryTemplate.Resources.AlertTopicPolicy.Properties.PolicyDocument.Statement){
+  const actions=Array.isArray(statement.Action)?statement.Action:[statement.Action];
+  if(actions.some(action=>action.includes('*')))errors.push('SNS resource policy requires explicit supported actions');
+}
 const hosting=await fs.readFile(path.join(root,'infrastructure/aws-static-site.yml'),'utf8');
 for(const expected of ['FrameOption: DENY',"frame-ancestors 'none'",'Permissions-Policy','X-Robots-Tag'])if(!hosting.includes(expected))errors.push(`Missing edge security header: ${expected}`);
 for(const file of ['src/app.js','scripts/build.mjs','backend/enquiry.py','backend/delivery.py']){

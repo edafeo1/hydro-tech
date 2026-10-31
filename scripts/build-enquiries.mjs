@@ -43,11 +43,11 @@ const template = {
       Properties: {FunctionName: Sub('${AWS::StackName}-submit'), Description: 'Validate, save and queue an enquiry reference; no email permission.', Runtime: 'python3.13', Architectures: ['arm64'], Handler: 'index.handler', MemorySize: 128, Timeout: 20, Role: GetAtt('SubmissionRole', 'Arn'), Code: {ZipFile: source}, Environment: {Variables: {ENQUIRY_TABLE: Ref('EnquiryTable'), DELIVERY_QUEUE_URL: Ref('DeliveryQueue'), ALLOWED_ORIGIN: Ref('AllowedOrigin'), DAILY_LIMIT: Ref('DailyLimit')}}},
     },
     DeliveryDeadLetterQueue: {
-      Type: 'AWS::SQS::Queue', DeletionPolicy: 'Retain', UpdateReplacePolicy: 'Retain',
+      Type: 'AWS::SQS::Queue', DeletionPolicy: 'RetainExceptOnCreate', UpdateReplacePolicy: 'Retain',
       Properties: {QueueName: Sub('${AWS::StackName}-failed.fifo'), FifoQueue: true, SqsManagedSseEnabled: true, MessageRetentionPeriod: 1209600, RedriveAllowPolicy: {redrivePermission: 'byQueue', sourceQueueArns: [Sub('arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${AWS::StackName}-delivery.fifo')]}},
     },
     DeliveryQueue: {
-      Type: 'AWS::SQS::Queue', DeletionPolicy: 'Retain', UpdateReplacePolicy: 'Retain',
+      Type: 'AWS::SQS::Queue', DeletionPolicy: 'RetainExceptOnCreate', UpdateReplacePolicy: 'Retain',
       Properties: {QueueName: Sub('${AWS::StackName}-delivery.fifo'), FifoQueue: true, SqsManagedSseEnabled: true, VisibilityTimeout: 120, MessageRetentionPeriod: 345600, ReceiveMessageWaitTimeSeconds: 20, RedrivePolicy: {deadLetterTargetArn: GetAtt('DeliveryDeadLetterQueue', 'Arn'), maxReceiveCount: 5}},
     },
     QueueTransportPolicy: {Type: 'AWS::SQS::QueuePolicy', Properties: {Queues: [Ref('DeliveryQueue'), Ref('DeliveryDeadLetterQueue')], PolicyDocument: {Version: '2012-10-17', Statement: [{Effect: 'Deny', Principal: '*', Action: 'sqs:*', Resource: [GetAtt('DeliveryQueue', 'Arn'), GetAtt('DeliveryDeadLetterQueue', 'Arn')], Condition: {Bool: {'aws:SecureTransport': 'false'}}}]}}},
@@ -72,9 +72,9 @@ const template = {
     // created for this optional SNS topic; customer content stays in DDB/SSE-SQS.
     AlertTopic: {Type: 'AWS::SNS::Topic', Condition: 'HasAlerts', Properties: {TopicName: Sub('${AWS::StackName}-alerts')}},
     AlertSubscription: {Type: 'AWS::SNS::Subscription', Condition: 'HasAlerts', Properties: {TopicArn: Ref('AlertTopic'), Protocol: 'email', Endpoint: Ref('AlertEmail')}},
-    AlertTopicPolicy: {Type: 'AWS::SNS::TopicPolicy', Condition: 'HasAlerts', Properties: {Topics: [Ref('AlertTopic')], PolicyDocument: {Version: '2012-10-17', Statement: [
-      {Effect: 'Allow', Principal: {Service: 'cloudwatch.amazonaws.com'}, Action: 'sns:Publish', Resource: Ref('AlertTopic'), Condition: {StringEquals: {'aws:SourceAccount': Ref('AWS::AccountId')}, ArnLike: {'aws:SourceArn': Sub('arn:${AWS::Partition}:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:${AWS::StackName}-*')}}},
-      {Effect: 'Deny', Principal: '*', Action: 'sns:*', Resource: Ref('AlertTopic'), Condition: {Bool: {'aws:SecureTransport': 'false'}}},
+    AlertTopicPolicy: {Type: 'AWS::SNS::TopicPolicy', Condition: 'HasAlerts', Properties: {Topics: [Ref('AlertTopic')], PolicyDocument: {Version: '2012-10-17', Id: Sub('${AWS::StackName}-alerts-policy'), Statement: [
+      {Sid: 'AllowStackCloudWatchAlarms', Effect: 'Allow', Principal: {Service: 'cloudwatch.amazonaws.com'}, Action: 'sns:Publish', Resource: Ref('AlertTopic'), Condition: {StringEquals: {'aws:SourceAccount': Ref('AWS::AccountId')}, ArnLike: {'aws:SourceArn': Sub('arn:${AWS::Partition}:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:${AWS::StackName}-*')}}},
+      {Sid: 'DenyInsecureRequests', Effect: 'Deny', Principal: '*', Action: ['sns:GetDataProtectionPolicy', 'sns:ListTagsForResource', 'sns:PutDataProtectionPolicy', 'sns:AddPermission', 'sns:DeleteTopic', 'sns:GetTopicAttributes', 'sns:ListSubscriptionsByTopic', 'sns:Publish', 'sns:RemovePermission', 'sns:SetTopicAttributes', 'sns:Subscribe'], Resource: Ref('AlertTopic'), Condition: {Bool: {'aws:SecureTransport': 'false'}}},
     ]}}},
     SubmissionFailureMetric: {Type: 'AWS::Logs::MetricFilter', Properties: {LogGroupName: Ref('SubmissionLogGroup'), FilterPattern: '{ $.event = "enquiry_queue_failed" }', MetricTransformations: [{MetricNamespace: Sub('HydroTec/${AWS::StackName}'), MetricName: 'AttentionRequired', MetricValue: '1', DefaultValue: 0}]}},
     DeliveryAttentionMetric: {Type: 'AWS::Logs::MetricFilter', Properties: {LogGroupName: Ref('DeliveryLogGroup'), FilterPattern: '{ $.event = "enquiry_delivery_attention" }', MetricTransformations: [{MetricNamespace: Sub('HydroTec/${AWS::StackName}'), MetricName: 'AttentionRequired', MetricValue: '1', DefaultValue: 0}]}},
