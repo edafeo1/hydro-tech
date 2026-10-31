@@ -38,8 +38,10 @@ python3 -m http.server 8080 --directory dist
 | `scripts/check.mjs` | Internal links, asset references, anchors, titles, IDs and syntax checks |
 | `dist/` | Portable, deployable website |
 | `infrastructure/aws-static-site.yml` | AWS hosting template and optional scoped GitHub staging role |
-| `backend/enquiry.py` | Validated business-email delivery with private backups and abuse limits |
-| `infrastructure/aws-enquiries.json` | Generated HTTP API, Lambda, IAM and DynamoDB template |
+| `backend/enquiry.py` | Validate, save and queue enquiry references with abuse limits |
+| `backend/delivery.py` | Fixed-recipient SES delivery, retries and duplicate checks |
+| `public/assets/` | Original project photos and committed responsive WebP variants |
+| `infrastructure/aws-enquiries.json` | Generated API, queue, worker, private backups and alert infrastructure |
 | `docs/enquiries.md` | Enquiry verification, operation, domain and advertising setup |
 | `docs/aws-setup.md` | First-time AWS account and GitHub staging setup |
 | `docs/aws-deployment.md` | AWS setup, deployment and production handover |
@@ -60,9 +62,9 @@ Every service links to related services, project information and a contextual en
 
 ## Enquiries
 
-The form supports direct delivery through a dedicated AWS HTTP API, Lambda and SES backend, with a private short-lived enquiry backup, server-side validation, duplicate detection and abuse limits. It sends to **noxy@hydrotecbuildingprotectiongroup.com.au**. See [the enquiry setup and operations guide](docs/enquiries.md) for verification, delivery status, retention and configuration.
+The form validates and saves enquiries in Sydney, then queues a reference for delivery by a separate SES worker. Fixed sender and recipient parameters, duplicate checks, bounded retries and operator alerts protect the flow. The preview currently uses a verified test route; the business domain and business inbox must be authenticated before production launch. See [enquiry operations](docs/enquiries.md) and [the current release status](docs/operations.md).
 
-Set `ENQUIRY_ENDPOINT` when building for AWS. Builds without that setting retain the email-app fallback and its matching disclosure. Mailbox verification and an actual delivery test are required before declaring the direct form operational.
+Set `ENQUIRY_ENDPOINT` when building for AWS. Builds without that setting retain the email-app fallback and its matching disclosure. The live browser test and operator-alert email were verified in the test inbox. Repeat end-to-end verification after any production sender or domain change.
 
 ## Production build
 
@@ -80,3 +82,11 @@ Only enable indexing once the domain, business content and production enquiry ha
 Copy and photographs were adapted from the existing Hydro-Tec website and its two-page capability statement. The statement confirms Noxy Adams as the contact and the four-part scope of two Broadway on Ann balcony restorations. No project duration, warranty period, licence number, named insurer, testimonial or measured long-term outcome has been invented. General gallery images are not presented as additional named case studies.
 
 The original capability statement is included at `/assets/hydro-tec-capability-statement.pdf`. See the launch-readiness document for the business details still needed.
+
+## Current improvements and Google launch
+
+The AWS preview includes responsive WebP photos, intrinsic image dimensions, versioned application assets, CSP and anti-framing headers, service/breadcrumb structured data, distinct regional copy and staging noindex protection. Both build modes, link/security checks, infrastructure schemas and 18 delivery tests run in CI.
+
+See [operations](docs/operations.md) for current verification and limits, [Google setup](docs/google-launch-plan.md) for account ownership and verification, and [the paused advertising brief](marketing/google-search-draft.json) for keyword and ad-copy drafts. No Google Ads budget, campaign activation or tracking tag is configured.
+
+![AWS preview](docs/website-preview.jpg)

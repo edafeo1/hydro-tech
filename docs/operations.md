@@ -1,0 +1,67 @@
+# Current operations and launch status
+
+The latest release is deployed to the existing AWS preview. The original business
+website has not been cut over. Historical AWS setup/verification snapshots remain
+records of their initial checks; this page describes the current implementation.
+
+## Verified
+
+- The hosting and enquiry stacks both reached `UPDATE_COMPLETE`. No existing
+  enquiry table or public API endpoint was replaced. The enquiry stack has 25
+  resources, including the encrypted FIFO delivery/failed queues and worker.
+- The worker mapping is enabled with batch size one and partial failure handling.
+  Three failure alarms are active and the operator's email subscription is confirmed.
+- A real browser submission reached the receiving test mailbox's Inbox. Its
+  targeted private status record confirmed `SENT`. A repeated API submission
+  returned the same reference without creating another delivery.
+- A labelled CloudWatch alarm test reached the operator inbox. The alarm was
+  restored to `OK` after testing. Alert messages contain no customer form contents.
+- All 23 generated documents passed structural/link/security checks. All normal
+  public page routes returned HTTP 200 with the security headers; an unknown route
+  returned the proper HTTP 404. The direct `/404.html` template is itself an
+  accessible file with noindex protection.
+- Desktop browser checks covered navigation, modern images, the gallery filter,
+  photo viewer, Escape/focus restoration and the live contact form. Our Approach
+  still contains no main photographs, preserving its distinction from Our Work.
+- Production and staging builds, infrastructure schema validation and 18 delivery
+  boundary tests passed GitHub CI. Every release commit's author and committer
+  were verified as the repository owner, without an added coauthor.
+
+## Cost watch
+
+`HydroTec-Cost-Watch` is a monitoring-only monthly AWS account budget. Its US$5
+reference amount sends actual-usage alerts above US$1 and US$5, excluding credits
+and refunds. It covers the whole account, including any other projects. This does
+not approve that amount of spending, stop resources, change the account plan, or
+provide an immediate hard cap. AWS billing updates and notifications can lag.
+
+No EC2 server, NAT gateway, database server, dedicated email IP, provisioned
+capacity or paid customer-managed KMS key was added. Existing free-account credits
+and usage-based services are retained. Alarms, custom metrics, queue polling,
+requests, email and storage can still incur usage charges. Do not activate a paid
+account upgrade or new subscription just to complete this setup.
+
+## Remaining production dependencies
+
+- Access to the current DNS provider. Complete ACM/SES verification, preserve
+  existing mail records, map old URLs, then coordinate root/www web records,
+  canonical domain, API origin and indexing flags as one launch.
+- A brand-authenticated SES sender and the intended business recipient. The
+  temporary verified test route remains in place. A successful Inbox test today
+  does not guarantee future Inbox placement, and does not replace domain DKIM/DMARC.
+- Owner-controlled Google account, any existing property/profile/account IDs,
+  accurate business hours and private business verification details. The Google
+  launch plan and three ad-group drafts are prepared; no accounts, Maps profile,
+  campaign spend or tracking tags were created by this release.
+- An explicit advertising budget and verified conversion measurement before paid
+  delivery. All drafts remain paused with no budget. No AdSense is installed.
+- Owner configuration of GitHub main-branch protection/required CI and account
+  recovery/MFA. The connected repository app does not have administration writes.
+- A configured server-validated bot challenge if required for launch. Current
+  validation, rate controls, honeypot and timing checks are not a CAPTCHA.
+- Final mobile/device QA and production-domain performance measurements. No
+  Lighthouse score, field Core Web Vitals result or search ranking is claimed.
+
+The Google draft, owner launch checklist and website preview are repository
+artifacts. Private mailbox records, message IDs, enquiry references and customer
+content are intentionally absent from this operational record.
