@@ -1,0 +1,246 @@
+{
+  "version": 1,
+  "status": "DRAFT_ONLY",
+  "createdInGoogleAds": false,
+  "currency": "AUD",
+  "accountOwner": null,
+  "approvedMonthlyBudgetAUD": null,
+  "billingConfigured": false,
+  "conversionTrackingActive": false,
+  "campaign": {
+    "name": "Hydro-Tec | Brisbane | Enquiries",
+    "status": "PAUSED",
+    "type": "SEARCH",
+    "network": "GOOGLE_SEARCH_ONLY",
+    "targetLocation": "Brisbane \u2014 owner to confirm exact location targets before launch",
+    "locationOption": "PRESENCE",
+    "dailyBudgetAUD": null,
+    "bidStrategy": null,
+    "adGroups": [
+      {
+        "name": "Leaking balconies",
+        "status": "PAUSED",
+        "finalUrl": "https://hydrotecbuildingprotectiongroup.com.au/services/leaking-balcony-repairs/",
+        "keywords": [
+          {
+            "text": "leaking balcony repairs brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "leaking balcony repairs brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "balcony waterproofing brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "balcony waterproofing brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "strata balcony repairs brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "strata balcony repairs brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "leaking balcony repair",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "leaking balcony repair",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          }
+        ],
+        "responsiveSearchAd": {
+          "status": "PAUSED",
+          "headlines": [
+            "Leaking Balcony Repairs",
+            "Balcony Waterproofing",
+            "From Strip-Out To Tiling",
+            "Hydro-Tec Building Protection",
+            "One Coordinated Crew",
+            "Discuss Your Building",
+            "Diagnosis Before Repair",
+            "Brisbane Remedial Work",
+            "Clear Scope & Photo Records"
+          ],
+          "descriptions": [
+            "Leaking balcony? Discuss an assessment and a coordinated restoration scope with Noxy.",
+            "Screeding, waterproofing, tiling and sealing coordinated through one crew.",
+            "For strata and body corporate buildings. Share the suburb and affected areas.",
+            "See the Broadway on Ann balcony project, then discuss your building."
+          ]
+        }
+      },
+      {
+        "name": "Remedial waterproofing",
+        "status": "PAUSED",
+        "finalUrl": "https://hydrotecbuildingprotectiongroup.com.au/services/remedial-waterproofing/",
+        "keywords": [
+          {
+            "text": "remedial waterproofing brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "remedial waterproofing brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "commercial waterproofing brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "commercial waterproofing brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "strata waterproofing brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "strata waterproofing brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "roof membrane repair brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "roof membrane repair brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          }
+        ],
+        "responsiveSearchAd": {
+          "status": "PAUSED",
+          "headlines": [
+            "Remedial Waterproofing",
+            "Find The Source Of The Leak",
+            "Rooftops, Podiums & Balconies",
+            "Hydro-Tec Building Protection",
+            "One Coordinated Crew",
+            "Discuss Your Building",
+            "Diagnosis Before Repair",
+            "Brisbane Remedial Work",
+            "Clear Scope & Photo Records"
+          ],
+          "descriptions": [
+            "Recurring water ingress? Start with an investigation before choosing a repair system.",
+            "Waterproofing for strata and commercial buildings across South East Queensland.",
+            "A written scope for preparation, access and the proposed waterproofing system.",
+            "Speak with Noxy about the building, symptoms and any existing defect report."
+          ]
+        }
+      },
+      {
+        "name": "Body corporate remediation",
+        "status": "PAUSED",
+        "finalUrl": "https://hydrotecbuildingprotectiongroup.com.au/services/body-corporate-remediation/",
+        "keywords": [
+          {
+            "text": "body corporate waterproofing",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "body corporate waterproofing",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "body corporate repairs brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "body corporate repairs brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "strata remedial works brisbane",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "strata remedial works brisbane",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          },
+          {
+            "text": "body corporate balcony repairs",
+            "matchType": "EXACT",
+            "status": "PAUSED"
+          },
+          {
+            "text": "body corporate balcony repairs",
+            "matchType": "PHRASE",
+            "status": "PAUSED"
+          }
+        ],
+        "responsiveSearchAd": {
+          "status": "PAUSED",
+          "headlines": [
+            "Body Corporate Remediation",
+            "Strata Waterproofing Repairs",
+            "One Scope. Clear Records.",
+            "Hydro-Tec Building Protection",
+            "One Coordinated Crew",
+            "Discuss Your Building",
+            "Diagnosis Before Repair",
+            "Brisbane Remedial Work",
+            "Clear Scope & Photo Records"
+          ],
+          "descriptions": [
+            "A clear remedial scope for committees, strata managers and commercial buildings.",
+            "Bring waterproofing and related restoration trades together with one point of contact.",
+            "Photo records and QA documentation form part of the project handover.",
+            "Tell us about the defect, access requirements and your existing report."
+          ]
+        }
+      }
+    ]
+  },
+  "negativeKeywordCandidates": [
+    "jobs",
+    "job",
+    "career",
+    "careers",
+    "salary",
+    "course",
+    "courses",
+    "training",
+    "diy",
+    "how to",
+    "bunnings",
+    "supplies",
+    "wholesale",
+    "shower",
+    "bathroom"
+  ],
+  "notes": [
+    "Planning terms only; volumes, CPCs and competition have not been measured.",
+    "Owner must review negative keywords and actual location targets.",
+    "Review account-specific estimates before choosing budget and bids.",
+    "All assets remain paused; no import or publishing has been performed."
+  ]
+}

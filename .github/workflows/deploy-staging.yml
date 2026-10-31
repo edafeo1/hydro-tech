@@ -34,6 +34,7 @@ jobs:
       AWS_STAGING_DISTRIBUTION_ID: ${{ vars.AWS_STAGING_DISTRIBUTION_ID }}
       SITE_ORIGIN: ${{ vars.AWS_STAGING_ORIGIN }}
       SITE_INDEXABLE: '0'
+      ENQUIRY_TEST_MODE: '1'
       ENQUIRY_ENDPOINT: ${{ vars.AWS_ENQUIRY_ENDPOINT }}
     steps:
       - name: Check out the selected source
@@ -78,6 +79,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          aws s3 sync dist/assets/ "s3://$AWS_STAGING_BUCKET/assets/" --cache-control 'public,max-age=60'
+          aws s3 sync dist/assets/ "s3://$AWS_STAGING_BUCKET/assets/" --cache-control 'public,max-age=300'
           aws s3 sync dist/ "s3://$AWS_STAGING_BUCKET/" --exclude 'assets/*' --cache-control 'no-cache'
           aws cloudfront create-invalidation --distribution-id "$AWS_STAGING_DISTRIBUTION_ID" --paths '/*'

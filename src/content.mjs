@@ -12,7 +12,7 @@ export const company = {
 export const services = [
   {
     slug: 'leaking-balcony-repairs', label: 'Leaking balconies', category: 'RESTORE',
-    title: 'A balcony needs a complete system.',
+    title: 'Leaking balcony repairs.<br>From the slab up.',
     subtitle: 'Remedial balcony waterproofing, from the slab to the final seal.',
     image: 'balcony.jpg', alt: 'Finished balcony with dark-grey tiles',
     lead: 'Water getting into the unit below? We investigate the cause, assess the existing system and scope the restoration. Our crew can coordinate the strip-out, screed, waterproofing, tiling and sealing.',
@@ -31,7 +31,7 @@ export const services = [
   },
   {
     slug: 'remedial-waterproofing', label: 'Remedial waterproofing', category: 'WATERPROOF',
-    title: 'Find the entry point. Fix the system.',
+    title: 'Remedial waterproofing.<br>Find the source.',
     subtitle: 'Rooftops, podiums, balconies and below-ground waterproofing.',
     image: 'rooftop.jpg', alt: 'Waterproofed rooftop beside a brick wall',
     lead: 'A recurring leak deserves a clear diagnosis. We investigate water ingress, assess the substrate and detail a waterproofing scope for the area, access and existing building conditions.',
@@ -50,7 +50,7 @@ export const services = [
   },
   {
     slug: 'facade-coatings', label: 'Facade coatings', category: 'PROTECT',
-    title: 'Protection starts with preparation.',
+    title: 'Facade coatings.<br>Built on preparation.',
     subtitle: 'Facade preparation, repairs, joint sealing and protective coatings.',
     image: 'facade.jpg', alt: 'Rope access technician preparing a building facade',
     lead: 'The outside of a building needs a considered scope. We combine surface preparation, repairs, sealing and protective coatings, with rope access where suitable for the work.',
@@ -69,7 +69,7 @@ export const services = [
   },
   {
     slug: 'rope-access', label: 'Rope access', category: 'ACCESS',
-    title: 'Reach the work. Plan the access.',
+    title: 'Rope access.<br>Reach the repair.',
     subtitle: 'Facade repairs, sealing and coatings at height.',
     image: 'hero.jpg', alt: 'Hydro-Tec technician working at height on a facade',
     lead: 'Rope access can make suitable facade work possible without a full scaffold installation. We assess the access together with the repair, sealing or coating scope.',
@@ -88,7 +88,7 @@ export const services = [
   },
   {
     slug: 'screeding-to-falls', label: 'Screeding to falls', category: 'DRAIN',
-    title: 'Give water the right way out.',
+    title: 'Screeding to falls.<br>Start with the drainage.',
     subtitle: 'Correct drainage falls before the membrane and finish go down.',
     image: 'balcony-screed.jpg', alt: 'New screed laid on a balcony to correct drainage falls',
     lead: 'A surface needs to direct water towards its outlet. Screeding forms the falls beneath the waterproofing and finish, and can be coordinated with the rest of a balcony or remedial scope.',
@@ -107,7 +107,7 @@ export const services = [
   },
   {
     slug: 'body-corporate-remediation', label: 'Body corporate remediation', category: 'COORDINATE',
-    title: 'A clear scope. One accountable crew.',
+    title: 'Body corporate remediation.<br>One coordinated scope.',
     subtitle: 'Coordinated remedial works for strata and body corporate buildings.',
     image: 'walkway.jpg', alt: 'Waterproofed walkway beside a commercial building',
     lead: 'Committees and building managers need a scope they can understand and work they can track. We investigate, scope and coordinate remedial waterproofing and related trades, with project records for the building.',

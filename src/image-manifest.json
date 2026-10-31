@@ -1,0 +1,229 @@
+{
+  "balcony-finished.jpg": {
+    "width": 800,
+    "height": 1000,
+    "variants": [
+      {
+        "name": "balcony-finished-480.webp",
+        "width": 480,
+        "bytes": 66766
+      },
+      {
+        "name": "balcony-finished-800.webp",
+        "width": 800,
+        "bytes": 172222
+      }
+    ],
+    "sourceSha256": "4ecabfd65e71153fb47895ffbf6c5664271b4d23de8af56924aa882de9d48121"
+  },
+  "balcony-membrane.jpg": {
+    "width": 800,
+    "height": 1000,
+    "variants": [
+      {
+        "name": "balcony-membrane-480.webp",
+        "width": 480,
+        "bytes": 48356
+      },
+      {
+        "name": "balcony-membrane-800.webp",
+        "width": 800,
+        "bytes": 142494
+      }
+    ],
+    "sourceSha256": "e7c547ae5240d323de492f98ddd0af0ffff5415f713f9543ba0124aa0fb2bfd5"
+  },
+  "balcony-screed.jpg": {
+    "width": 800,
+    "height": 1000,
+    "variants": [
+      {
+        "name": "balcony-screed-480.webp",
+        "width": 480,
+        "bytes": 50418
+      },
+      {
+        "name": "balcony-screed-800.webp",
+        "width": 800,
+        "bytes": 153790
+      }
+    ],
+    "sourceSha256": "969f1f0f34f08bf22b16ddc25673da5f3e0b58ac5166582a88ea177a369f71c1"
+  },
+  "balcony-strip-out.jpg": {
+    "width": 800,
+    "height": 1000,
+    "variants": [
+      {
+        "name": "balcony-strip-out-480.webp",
+        "width": 480,
+        "bytes": 38128
+      },
+      {
+        "name": "balcony-strip-out-800.webp",
+        "width": 800,
+        "bytes": 107782
+      }
+    ],
+    "sourceSha256": "5a0d45523c831fd9b04e50bc96f8b621171746dd0c40a49e88dc2eccc5425e03"
+  },
+  "balcony.jpg": {
+    "width": 600,
+    "height": 800,
+    "variants": [
+      {
+        "name": "balcony-480.webp",
+        "width": 480,
+        "bytes": 21488
+      },
+      {
+        "name": "balcony-600.webp",
+        "width": 600,
+        "bytes": 36394
+      }
+    ],
+    "sourceSha256": "32890d7bd0043bd7cb3901a83943fbd1a1de5b7c22c6444e5644874ee4a7dd8b"
+  },
+  "below-ground.jpg": {
+    "width": 600,
+    "height": 800,
+    "variants": [
+      {
+        "name": "below-ground-480.webp",
+        "width": 480,
+        "bytes": 35234
+      },
+      {
+        "name": "below-ground-600.webp",
+        "width": 600,
+        "bytes": 58810
+      }
+    ],
+    "sourceSha256": "9d8c0d0a7d3c8575dbeb5268c3c01a5bcf8a8bad81ea511b4560be0650fb8517"
+  },
+  "broadway-feature.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "variants": [
+      {
+        "name": "broadway-feature-480.webp",
+        "width": 480,
+        "bytes": 24216
+      },
+      {
+        "name": "broadway-feature-1200.webp",
+        "width": 1200,
+        "bytes": 170486
+      }
+    ],
+    "sourceSha256": "5e1aa5fe4fc7b3606a6cd846897169d430e1ff508ba6bf82cf7026bc882685d3"
+  },
+  "emblem.png": {
+    "width": 113,
+    "height": 160,
+    "variants": [],
+    "sourceSha256": "745934f6d3e0768120dbb28aa780695091b293e2bd995fa428a481a0ae6683f8"
+  },
+  "facade.jpg": {
+    "width": 900,
+    "height": 765,
+    "variants": [
+      {
+        "name": "facade-480.webp",
+        "width": 480,
+        "bytes": 17608
+      },
+      {
+        "name": "facade-900.webp",
+        "width": 900,
+        "bytes": 50130
+      }
+    ],
+    "sourceSha256": "31910781fbd2d0170c4fe2677f8cd809f1bb879f5d6ff2435cf9c56a7a9f1783"
+  },
+  "hero.jpg": {
+    "width": 1500,
+    "height": 2000,
+    "variants": [
+      {
+        "name": "hero-480.webp",
+        "width": 480,
+        "bytes": 29834
+      },
+      {
+        "name": "hero-1200.webp",
+        "width": 1200,
+        "bytes": 131100
+      }
+    ],
+    "sourceSha256": "5c661d64dbf68fe5ba6fdd04519026443fd054a0fc18db33e11d20a4bf90a70c"
+  },
+  "rooftop-preparation.jpg": {
+    "width": 600,
+    "height": 800,
+    "variants": [
+      {
+        "name": "rooftop-preparation-480.webp",
+        "width": 480,
+        "bytes": 45792
+      },
+      {
+        "name": "rooftop-preparation-600.webp",
+        "width": 600,
+        "bytes": 74378
+      }
+    ],
+    "sourceSha256": "8381e0221ddfd8c242561f80016596975a6bf6e1b111442178d58e8230bd3d39"
+  },
+  "rooftop.jpg": {
+    "width": 600,
+    "height": 800,
+    "variants": [
+      {
+        "name": "rooftop-480.webp",
+        "width": 480,
+        "bytes": 17214
+      },
+      {
+        "name": "rooftop-600.webp",
+        "width": 600,
+        "bytes": 27760
+      }
+    ],
+    "sourceSha256": "ec17e5b99508651772f2488ffb1f2f5de2ec7d617967e28a7a5b8122fb4e867b"
+  },
+  "technician-screeding.jpg": {
+    "width": 1400,
+    "height": 1867,
+    "variants": [
+      {
+        "name": "technician-screeding-480.webp",
+        "width": 480,
+        "bytes": 29878
+      },
+      {
+        "name": "technician-screeding-1200.webp",
+        "width": 1200,
+        "bytes": 167114
+      }
+    ],
+    "sourceSha256": "7b488f910b4b578acc598708a333a087499d3d1fa78ca992deaa5f1c3e5e0581"
+  },
+  "walkway.jpg": {
+    "width": 600,
+    "height": 800,
+    "variants": [
+      {
+        "name": "walkway-480.webp",
+        "width": 480,
+        "bytes": 21784
+      },
+      {
+        "name": "walkway-600.webp",
+        "width": 600,
+        "bytes": 33994
+      }
+    ],
+    "sourceSha256": "651c66ad5495a2a48714785e74cb605dffe5062005309bee97bc6664492bcaf8"
+  }
+}

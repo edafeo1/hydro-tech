@@ -1,3 +1,4 @@
+document.documentElement.classList.replace('no-js','js');
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -10,8 +11,7 @@ function setMenu(open) {
   mobileMenu.hidden = !open;
   menuButton.setAttribute('aria-expanded', String(open));
   menuButton.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-  if (!open) document.body.style.overflow = '';
-  else document.body.style.overflow = 'hidden';
+  document.body.classList.toggle('scroll-locked', open);
 }
 menuButton?.addEventListener('click', () => setMenu(mobileMenu.hidden));
 document.addEventListener('keydown', event => {
@@ -92,7 +92,7 @@ photoCards.forEach(card => card.addEventListener('click', () => {
   photoOpener = card;
   showPhoto(lightboxCards.indexOf(card));
   lightbox.showModal();
-  document.body.style.overflow = 'hidden';
+  document.body.classList.add('scroll-locked');
   $('.lightbox-close', lightbox).focus();
 }));
 $('.lightbox-close', lightbox)?.addEventListener('click', () => lightbox.close());
@@ -107,7 +107,7 @@ lightbox?.addEventListener('click', event => {
   if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) lightbox.close();
 });
 lightbox?.addEventListener('close', () => {
-  document.body.style.overflow = '';
+  document.body.classList.remove('scroll-locked');
   photoOpener?.focus();
 });
 
@@ -199,7 +199,8 @@ if (form) {
         $('#enquiry-reference').textContent = `Your reference: ${payload.reference}`;
         success.scrollIntoView({block:'start',behavior:reducedMotion()?'instant':'smooth'});
         $('#enquiry-success-title').focus({preventScroll:true});
-        // Future conversion tracking can listen here. No customer details are exposed.
+        // Conversion tracking must listen only after the backend confirms receipt.
+        // Never include form values in analytics; account setup remains separate.
         window.dispatchEvent(new CustomEvent('hydrotec:enquiry-submitted', {detail:{reference:payload.reference}}));
       } catch (error) {
         formError.textContent = error.name === 'AbortError' ? 'Sending took longer than expected. Wait a minute and retry, or contact Noxy directly. Your details are still here.' : error instanceof TypeError ? 'The connection was interrupted. Please retry, or call or email Noxy directly. Your details are still here.' : error.message;

@@ -5,7 +5,18 @@ Parameters:
   CustomDomainName:
     Type: String
     Default: ''
-    Description: Optional single custom hostname. Leave empty to use the CloudFront hostname.
+    AllowedPattern: '^$|^[a-z0-9.-]+[.][a-z]{2,63}$'
+    Description: Optional canonical hostname. Leave empty to use the CloudFront hostname.
+  AlternateDomainName:
+    Type: String
+    Default: ''
+    AllowedPattern: '^$|^[a-z0-9.-]+[.][a-z]{2,63}$'
+    Description: Optional second hostname, such as www. Certificate must cover both names.
+  EnableIndexing:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['true', 'false']
+    Description: Enable only after the business domain and production content are verified.
   CertificateArn:
     Type: String
     Default: ''
@@ -28,6 +39,11 @@ Parameters:
     Description: Exact OIDC subject for this repository and staging environment. Default matches this repository's immutable IDs; no wildcards.
 
 Rules:
+  AlternateDomainRequiresCanonical:
+    RuleCondition: !Not [!Equals [!Ref AlternateDomainName, '']]
+    Assertions:
+      - Assert: !Not [!Equals [!Ref CustomDomainName, '']]
+        AssertDescription: A second hostname requires a canonical hostname.
   CustomDomainRequiresCertificate:
     RuleCondition: !Not [!Equals [!Ref CustomDomainName, '']]
     Assertions:
@@ -35,6 +51,8 @@ Rules:
         AssertDescription: Supply an issued us-east-1 ACM certificate for the custom domain.
 
 Conditions:
+  HasAlternateDomain: !Not [!Equals [!Ref AlternateDomainName, '']]
+  IndexingEnabled: !Equals [!Ref EnableIndexing, 'true']
   HasCustomDomain: !And
     - !Not [!Equals [!Ref CustomDomainName, '']]
     - !Not [!Equals [!Ref CertificateArn, '']]
@@ -86,10 +104,25 @@ Resources:
       FunctionConfig:
         Comment: Resolve actual multi-page directory index files without an SPA fallback.
         Runtime: cloudfront-js-2.0
-      FunctionCode: |
+      FunctionCode: !Sub |
         function handler(event) {
           var request = event.request;
           var uri = request.uri;
+          var canonical = '${CustomDomainName}';
+          var clean = uri.replace(/\/index\.html$/, '/');
+          if (!clean.endsWith('/') && !clean.split('/').pop().includes('.')) clean += '/';
+          if ((canonical && request.headers.host.value !== canonical) || clean !== uri) {
+            var query = [];
+            Object.keys(request.querystring || {}).forEach(function (key) {
+              var entry = request.querystring[key];
+              (entry.multiValue || [entry]).forEach(function (value) {
+                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(value.value));
+              });
+            });
+            return {statusCode: 301, statusDescription: 'Moved Permanently', headers: {
+              location: {value: 'https://' + (canonical || request.headers.host.value) + clean + (query.length ? '?' + query.join('&') : '')}
+            }};
+          }
           if (uri.endsWith('/')) {
             request.uri += 'index.html';
           } else if (!uri.split('/').pop().includes('.')) {
@@ -122,6 +155,12 @@ Resources:
       ResponseHeadersPolicyConfig:
         Name: !Sub '${AWS::StackName}-response-headers'
         SecurityHeadersConfig:
+          ContentSecurityPolicy:
+            ContentSecurityPolicy: "frame-ancestors 'none'; object-src 'none'; base-uri 'self'"
+            Override: true
+          FrameOptions:
+            FrameOption: DENY
+            Override: true
           ContentTypeOptions:
             Override: true
           ReferrerPolicy:
@@ -132,6 +171,14 @@ Resources:
             IncludeSubdomains: false
             Preload: false
             Override: true
+        CustomHeadersConfig:
+          Items:
+            - Header: Permissions-Policy
+              Value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()'
+              Override: true
+            - Header: X-Robots-Tag
+              Value: !If [IndexingEnabled, 'all', 'noindex, nofollow']
+              Override: true
 
   Distribution:
     Type: AWS::CloudFront::Distribution
@@ -143,7 +190,10 @@ Resources:
         HttpVersion: http2and3
         IPV6Enabled: true
         PriceClass: PriceClass_All
-        Aliases: !If [HasCustomDomain, [!Ref CustomDomainName], !Ref 'AWS::NoValue']
+        Aliases: !If
+          - HasCustomDomain
+          - !If [HasAlternateDomain, [!Ref CustomDomainName, !Ref AlternateDomainName], [!Ref CustomDomainName]]
+          - !Ref 'AWS::NoValue'
         ViewerCertificate: !If
           - HasCustomDomain
           - AcmCertificateArn: !Ref CertificateArn

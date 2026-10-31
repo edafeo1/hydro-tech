@@ -16,7 +16,7 @@ The connected website is implemented. These items determine whether it is ready 
 
 - Source repository: `edafeo1/noxy`. AWS staging is deployed in connected account `385427225795` with its existing Free account plan retained. The GitHub deployment role remains pending an organisation IAM permission issue; see `aws-staging-status.md`.
 - Domain registrar and DNS control, current hosting and existing redirects.
-- Direct contact form is deployed to the existing business inbox. Finish mailbox verification and DKIM DNS records, then verify a labelled enquiry in the real inbox; see `enquiries.md`.
+- The staging contact form uses a temporary verified test route. Complete business-domain DKIM, configure the fixed business sender/recipient, then verify a labelled enquiry in the real business inbox; see `enquiries.md`.
 - Privacy wording reviewed against the actual production hosting, analytics and enquiry handling.
 - Measurement requirements. No analytics or advertising scripts are included by default.
 
@@ -27,8 +27,12 @@ The connected website is implemented. These items determine whether it is ready 
 - Confirm production metadata and canonical origin.
 - Run the build and link checks for the production artifact.
 - Repeat keyboard, phone and desktop checks for the final deployed environment.
-- Backend validation, duplicate, rate-limit and failure tests pass; live failure/backup paths were checked. Complete actual successful delivery after SES verification and a current browser submission check.
+- Run the validation, duplicate, rate-limit, queue and worker failure tests. Verify successful queued delivery and alert subscription in AWS, then repeat a real browser submission on the final domain.
 - Check page speed using the final domain and production assets, rather than claiming a score from a development preview.
 - Capture the prior deployment and DNS settings so the rollout can be reversed.
 
 The site does not claim a fabricated review rating, licence number, warranty period, project duration or measured performance score.
+
+## Google ownership and paid launch
+
+Follow [google-launch-plan.md](google-launch-plan.md). Account ownership, DNS verification, actual business hours/address for Maps, real measurement IDs and a concrete ad budget remain owner inputs. The keyword/ad draft is paused with no budget; no Google campaign or tracking tag is live. Main-branch protection and required CI checks also need the repository owner to configure them, because the connected GitHub app has no administration write capability.

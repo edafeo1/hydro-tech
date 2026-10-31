@@ -27,10 +27,23 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Build all pages
-        run: npm run build
-      - name: Validate documents, links and assets
-        run: npm run check
+      - name: Validate production build (no deployment)
+        env:
+          SITE_ORIGIN: https://hydrotecbuildingprotectiongroup.com.au
+          SITE_INDEXABLE: '1'
+          ENQUIRY_ENDPOINT: https://7h65rrgqo8.execute-api.ap-southeast-2.amazonaws.com/enquiries
+        run: |
+          npm run build
+          npm run check
+      - name: Build and validate staging
+        env:
+          SITE_ORIGIN: https://d3s90nqnvv0rq0.cloudfront.net
+          SITE_INDEXABLE: '0'
+          ENQUIRY_ENDPOINT: https://7h65rrgqo8.execute-api.ap-southeast-2.amazonaws.com/enquiries
+          ENQUIRY_TEST_MODE: '1'
+        run: |
+          npm run build
+          npm run check
       - name: Validate the AWS infrastructure template
         shell: bash
         run: |

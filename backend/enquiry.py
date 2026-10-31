@@ -17,9 +17,9 @@ from botocore.exceptions import BotoCoreError, ClientError
 
 CONFIG = Config(connect_timeout=2, read_timeout=4, retries={"total_max_attempts": 2, "mode": "standard"})
 table = boto3.resource("dynamodb", config=CONFIG).Table(os.environ["ENQUIRY_TABLE"])
-ses = boto3.client("sesv2", config=CONFIG)
+queue = boto3.client("sqs", config=CONFIG)
+QUEUE_URL = os.environ["DELIVERY_QUEUE_URL"]
 ORIGIN = os.environ["ALLOWED_ORIGIN"]
-EMAIL = os.environ["BUSINESS_EMAIL"]
 DAILY_LIMIT = int(os.environ.get("DAILY_LIMIT", "100"))
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -83,25 +83,6 @@ def consume_limit(key, limit, expires):
     )
 
 
-def email_content(details, reference):
-    lines = ["New Hydro-Tec website enquiry", "", f"Reference: {reference}", f"Name: {details['name']}", f"Preferred contact: {details['contact']}", f"Building suburb: {details['suburb']}"]
-    for key, label in (("service", "Service"), ("role", "Role"), ("timing", "Timing"), ("report", "Existing report")):
-        if details[key]:
-            lines.append(f"{label}: {details[key]}")
-    lines.extend(["", "What's happening:", details["problem"], "", "Submitted through the Hydro-Tec website."])
-    request = {
-        "FromEmailAddress": f"Hydro-Tec website <{EMAIL}>",
-        "Destination": {"ToAddresses": [EMAIL]},
-        "Content": {"Simple": {
-            "Subject": {"Data": f"Website enquiry | {details['suburb']} | {reference}", "Charset": "UTF-8"},
-            "Body": {"Text": {"Data": "\n".join(lines), "Charset": "UTF-8"}},
-        }},
-    }
-    if EMAIL_RE.fullmatch(details["contact"]):
-        request["ReplyToAddresses"] = [details["contact"]]
-    return request
-
-
 def handler(event, context):
     headers = {str(k).lower(): str(v) for k, v in (event.get("headers") or {}).items()}
     if headers.get("origin") != ORIGIN:
@@ -143,8 +124,10 @@ def handler(event, context):
         if existing:
             if existing.get("digest") != digest:
                 return response(409, "The details changed. Please refresh the page before sending a new enquiry.")
-            if existing.get("status") == "SENT":
-                return response(200, "Your enquiry has been submitted.", reference=reference)
+            if existing.get("status") in {"QUEUED", "DELIVERING", "SENT", "UNCERTAIN"}:
+                return response(202, "Your enquiry has been received.", reference=reference)
+            if existing.get("status") == "SENDING":
+                return response(409, "Please contact Noxy with this enquiry reference for a delivery check.")
             if int(existing.get("lockedUntil", 0)) > now:
                 return response(409, "This enquiry is being sent. Please wait a moment before trying again.")
 
@@ -160,28 +143,30 @@ def handler(event, context):
         try:
             if existing:
                 table.update_item(Key=key,
-                    UpdateExpression="SET #status = :sending, lockedUntil = :lock, expiresAt = :expiry",
-                    ConditionExpression="#status <> :sent AND lockedUntil <= :now",
+                    UpdateExpression="SET #status = :pending, lockedUntil = :lock, expiresAt = :expiry",
+                    ConditionExpression="#status IN (:pending, :failed) AND lockedUntil <= :now",
                     ExpressionAttributeNames={"#status": "status"},
-                    ExpressionAttributeValues={":sending": "SENDING", ":sent": "SENT", ":lock": now + 45, ":now": now, ":expiry": now + 2592000})
+                    ExpressionAttributeValues={":pending": "PENDING_QUEUE", ":failed": "QUEUE_FAILED", ":lock": now + 45, ":now": now, ":expiry": now + 2592000})
             else:
-                table.put_item(Item={**key, "reference": reference, "digest": digest, "details": details, "createdAt": now, "expiresAt": now + 2592000, "status": "SENDING", "lockedUntil": now + 45}, ConditionExpression="attribute_not_exists(pk)")
+                table.put_item(Item={**key, "reference": reference, "digest": digest, "details": details, "createdAt": now, "expiresAt": now + 2592000, "status": "PENDING_QUEUE", "lockedUntil": now + 45}, ConditionExpression="attribute_not_exists(pk)")
         except table.meta.client.exceptions.ConditionalCheckFailedException:
             return response(409, "This enquiry is being sent. Please wait a moment before trying again.")
 
-        sent = ses.send_email(**email_content(details, reference))
+        queue.send_message(QueueUrl=QUEUE_URL, MessageBody=json.dumps({"submissionId": submission_id}), MessageGroupId="website-enquiries", MessageDeduplicationId=submission_id)
     except (ClientError, BotoCoreError) as error:
         code = error.response.get("Error", {}).get("Code", "AWS_ERROR") if isinstance(error, ClientError) else "CONNECTION_ERROR"
-        log_event("enquiry_send_failed", reference, code)
-        # Keep the private backup. The visitor can retry the same ID after the lock expires.
+        log_event("enquiry_queue_failed", reference, code)
+        # The private backup remains available; a retry uses the same queue deduplication ID.
         return response(503, "We could not confirm your enquiry was sent. Please wait a minute and retry, or call or email Noxy directly.")
 
     try:
-        table.update_item(Key=key, UpdateExpression="SET #status = :sent, messageId = :message, sentAt = :now REMOVE lockedUntil",
+        table.update_item(Key=key, UpdateExpression="SET #status = :queued REMOVE lockedUntil",
+            ConditionExpression="#status = :pending",
             ExpressionAttributeNames={"#status": "status"},
-            ExpressionAttributeValues={":sent": "SENT", ":message": sent["MessageId"], ":now": now})
+            ExpressionAttributeValues={":queued": "QUEUED", ":pending": "PENDING_QUEUE"})
+    except table.meta.client.exceptions.ConditionalCheckFailedException:
+        pass  # The worker may already have claimed or completed this enquiry.
     except (ClientError, BotoCoreError):
-        # SES accepted this email. Do not tell the visitor to resend just because metadata failed.
-        log_event("enquiry_delivery_metadata_failed", reference)
-    log_event("enquiry_sent", reference)
-    return response(200, "Your enquiry has been submitted.", reference=reference)
+        log_event("enquiry_queue_metadata_failed", reference)
+    log_event("enquiry_queued", reference)
+    return response(202, "Your enquiry has been received.", reference=reference)
