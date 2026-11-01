@@ -85,8 +85,10 @@ The original capability statement is included at `/assets/hydro-tec-capability-s
 
 ## Current improvements and Google launch
 
-The AWS preview includes responsive WebP photos, intrinsic image dimensions, versioned application assets, CSP and anti-framing headers, service/breadcrumb structured data, distinct regional copy and staging noindex protection. Both build modes, link/security checks, infrastructure schemas and 18 delivery tests run in CI.
+The AWS preview includes responsive WebP photos, intrinsic image dimensions, versioned application assets, CSP and anti-framing headers, service/breadcrumb structured data, distinct regional copy and staging noindex protection. Both build modes, link/security checks, infrastructure schemas and the delivery tests run in CI.
 
 See [operations](docs/operations.md) for current verification and limits, [Google setup](docs/google-launch-plan.md) for account ownership and verification, and [the paused advertising brief](marketing/google-search-draft.json) for keyword and ad-copy drafts. No Google Ads budget, campaign activation or tracking tag is configured.
 
 ![AWS preview](docs/website-preview.jpg)
+
+For the current implementation and a learning/review guide, see [the code walkthrough](docs/code-walkthrough.md). It covers the clearer homepage, preserved business information, responsive checks, form handling and release steps.

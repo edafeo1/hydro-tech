@@ -115,6 +115,7 @@ const form = $('#enquiry-form');
 if (form) {
   const endpoint = form.dataset.endpoint || '';
   let startedAt = Date.now();
+  let formOpenedAt = performance.now();
   let submissionId = '';
   let submissionDetails = '';
   let sending = false;
@@ -184,11 +185,11 @@ if (form) {
         const result = await fetch(endpoint, {
           method: 'POST', credentials: 'omit', signal: abort.signal,
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({...details, submissionId, startedAt, website: String(data.get('website') || '')}),
+          body: JSON.stringify({...details, submissionId, startedAt, elapsedMs: Math.round(performance.now() - formOpenedAt), website: String(data.get('website') || '')}),
         });
         let payload;
         try {payload = await result.json();} catch {payload = {};}
-        if (!result.ok || !/^HT-[a-f0-9-]{36}$/.test(payload.reference || '')) {
+        if (!result.ok || payload.reference !== `HT-${submissionId}`) {
           const knownError = [400,409,429,503].includes(result.status) && typeof payload.message === 'string';
           throw new Error(knownError ? payload.message : 'We could not confirm your enquiry was sent. Please retry, or call or email Noxy directly.');
         }
@@ -247,7 +248,7 @@ if (form) {
   });
   $('#enquiry-new')?.addEventListener('click', () => {
     form.reset();
-    submissionId = '';submissionDetails = '';startedAt = Date.now();
+    submissionId = '';submissionDetails = '';startedAt = Date.now();formOpenedAt = performance.now();
     $('#enquiry-success').hidden = true;
     form.hidden = false;$('.form-heading').hidden = false;
     $('#enquiry-name').focus();

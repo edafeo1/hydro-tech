@@ -95,12 +95,15 @@ def deliver(submission_id):
 
 def handler(event, context):
     failures = []
-    for message in event.get("Records", []):
+    records = event.get("Records", [])
+    for index, message in enumerate(records):
         try:
             body = json.loads(message["body"])
             deliver(body["submissionId"])
         except Exception:
             # Never log an exception containing form values or AWS request parameters.
-            failures.append({"itemIdentifier": message["messageId"]})
-            break  # Preserve FIFO ordering; batch size is intentionally one.
+            # FIFO requires every unprocessed message to remain in the queue,
+            # even if a future configuration increases the current batch size.
+            failures.extend({"itemIdentifier": pending["messageId"]} for pending in records[index:])
+            break
     return {"batchItemFailures": failures}

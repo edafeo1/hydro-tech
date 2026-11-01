@@ -226,5 +226,24 @@ class EnquiryTests(unittest.TestCase):
         self.assertEqual(self.send()['statusCode'],409)
         self.delivery.ses.send_email.assert_not_called()
 
+    def test_elapsed_timing_accepts_a_device_clock_different_from_aws(self):
+        self.data['startedAt'] = int((time.time() + 7 * 86400) * 1000)
+        self.data['elapsedMs'] = 10000
+        self.assertEqual(self.send()['statusCode'], 202)
+
+    def test_invalid_elapsed_timing_never_creates_an_enquiry(self):
+        for value in [True, -1, 0, 1999, 86400001, '10000', float('nan'), float('inf')]:
+            with self.subTest(value=value):
+                self.assertEqual(self.send(self.event({**self.data,'elapsedMs':value}))['statusCode'],400)
+        self.enquiry.queue.send_message.assert_not_called()
+        self.assertFalse(self.table.items)
+
+    def test_fifo_failure_returns_failed_and_all_unprocessed_records(self):
+        records=[{'messageId':str(i),'body':json.dumps({'submissionId':str(i)})} for i in range(3)]
+        with patch.object(self.delivery,'deliver',side_effect=[None,RuntimeError('Test failure')]) as send:
+            result=self.delivery.handler({'Records':records},None)
+        self.assertEqual(send.call_count,2)
+        self.assertEqual(result,{'batchItemFailures':[{'itemIdentifier':'1'},{'itemIdentifier':'2'}]})
+
 
 if __name__=='__main__':unittest.main()

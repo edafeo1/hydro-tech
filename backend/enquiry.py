@@ -105,8 +105,17 @@ def handler(event, context):
         # A filled hidden field is rejected without creating a lead or sending email.
         if data.get("website"):
             return response(400, "Please refresh the page and try again, or call Noxy.")
-        started = data.get("startedAt")
-        if not isinstance(started, (int, float)) or isinstance(started, bool) or not (2 <= time.time() - started / 1000 <= 86400):
+        elapsed = data.get("elapsedMs")
+        if elapsed is not None:
+            # Elapsed time avoids rejecting legitimate visitors whose device clock
+            # differs from AWS. Like the legacy timing field, this is only an abuse
+            # heuristic, not authentication or a human-verification challenge.
+            timing_valid = isinstance(elapsed, (int, float)) and not isinstance(elapsed, bool) and 2000 <= elapsed <= 86400000
+        else:
+            # Keep cached older pages working during a rolling deployment.
+            started = data.get("startedAt")
+            timing_valid = isinstance(started, (int, float)) and not isinstance(started, bool) and 2 <= time.time() - started / 1000 <= 86400
+        if not timing_valid:
             return response(400, "Please take a moment to check the details, then try again.")
     except (ValueError, TypeError, UnicodeDecodeError) as error:
         message = str(error) if isinstance(error, ValueError) and not isinstance(error, json.JSONDecodeError) else "Check the enquiry details and try again."

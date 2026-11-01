@@ -41,3 +41,31 @@ Assets are uploaded before HTML and the previous build remains available as a wo
 ## Subsequent development
 
 Work on a feature branch, run `npm run build` and `npm run check`, and open a pull request. Once checks pass, review and merge the source change. Public production rollout is a separate operation from the private design preview and the staging workflow.
+
+
+## Owner-only security settings
+
+A reviewable ruleset import is prepared at
+`infrastructure/github-main-ruleset.json`. It is **disabled**, and has not been
+applied to GitHub. The connected repository app exposes source/PR writes but no
+administration writes. It cannot activate branch rules or register your MFA device.
+
+In repository Settings → Rules → Rulesets, import the JSON where supported,
+confirm the exact successful CI check is `Build, links and assets`, then review
+and activate the ruleset. It blocks deletion/force pushes and requires a PR and
+passing CI. Zero mandatory approving reviews avoids requiring a second contributor
+for the owner's solo workflow. Do not configure a paid upgrade automatically;
+private-repository rule availability depends on the existing GitHub plan.
+
+Register two-step verification and recovery methods directly in the owner's
+GitHub/AWS account settings. Keep backup codes, passwords and security-device
+secrets out of this repository and chat. No additional developer contributor or
+persistent access token is needed for the existing source workflow.
+
+The build now checks recognisable credential patterns across reachable Git
+history. It prints only the file and credential category, never the matched value.
+This is a useful guard, not proof that every possible secret can be detected. If
+it flags a real credential, revoke/rotate it through its owner account before
+removing it from history; do not paste its value into an issue or chat.
+
+References: <https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets>
