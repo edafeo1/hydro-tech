@@ -7,6 +7,7 @@ const root=path.resolve(import.meta.dirname,'..');
 const dist=path.join(root,'dist');
 const manifest=JSON.parse(await fs.readFile(path.join(root,'page-manifest.json'),'utf8'));
 const errors=[];
+try { await fs.access(path.join(dist,'__qa__')); errors.push('Development QA pages must be removed before release'); } catch {}
 let links=0,images=0;
 const contents=new Map();
 const localPath=url=>path.join(dist,url.endsWith('/')?`${url.slice(1)}index.html`:url.slice(1));
@@ -59,6 +60,7 @@ for(const [page,html]of contents){
     }
   }
 }
+for(const source of ['src/app.js','tools/preview.js'])execFileSync(process.execPath,['--check',path.join(root,source)],{stdio:'pipe'});
 const js=path.join(root,'src','app.js');
 execFileSync(process.execPath,['--check',js],{stdio:'pipe'});
 const titleSet=new Set(manifest.map(page=>page.title));

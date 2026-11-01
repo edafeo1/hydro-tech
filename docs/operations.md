@@ -23,7 +23,7 @@ records of their initial checks; this page describes the current implementation.
 - Desktop browser checks covered navigation, modern images, the gallery filter,
   photo viewer, Escape/focus restoration and the live contact form. Our Approach
   still contains no main photographs, preserving its distinction from Our Work.
-- Production and staging builds, infrastructure schema validation and 18 delivery
+- Production and staging builds, infrastructure schema validation and the delivery
   boundary tests passed GitHub CI. Every release commit's author and committer
   were verified as the repository owner, without an added coauthor.
 
@@ -59,9 +59,36 @@ account upgrade or new subscription just to complete this setup.
   recovery/MFA. The connected repository app does not have administration writes.
 - A configured server-validated bot challenge if required for launch. Current
   validation, rate controls, honeypot and timing checks are not a CAPTCHA.
-- Final mobile/device QA and production-domain performance measurements. No
+- Physical-device QA and production-domain performance measurements. No
   Lighthouse score, field Core Web Vitals result or search ranking is claimed.
 
 The Google draft, owner launch checklist and website preview are repository
 artifacts. Private mailbox records, message IDs, enquiry references and customer
 content are intentionally absent from this operational record.
+
+
+## Clarity and final QA follow-up
+
+The homepage now names waterproofing/building repairs directly, describes the
+actual problems and audience in plain language, and offers a short suitability
+check. Service cards use friendly display titles while retaining their original
+service values. The full company/service data, eight gallery photographs, 11 FAQs
+and process information were checked against the previous source and preserved.
+
+All 23 pages were checked at 320, 375, 768 and 1280 CSS pixels, with no horizontal
+page overflow after fixing the Broadway project heading. Mobile navigation,
+keyboard wrapping/Escape and contact validation were checked in the browser.
+This is responsive-layout verification, not a physical-device or field-vitals
+measurement. Primary-button text contrast was improved and the unopened gallery
+no longer downloads a placeholder photograph on every page.
+
+The form uses elapsed timing to tolerate a visitor's clock differing from AWS and
+verifies the exact returned submission reference. The worker retains all failed
+and unprocessed FIFO records. The suite has 23 tests, and CI checks recognisable
+credential patterns across reachable Git history without printing their values.
+
+The development-only responsive viewer is removed by a normal build and blocked
+by release checks. The step-by-step code guide is `code-walkthrough.md`.
+Owner-only branch protection/MFA remain unapplied; a disabled ruleset import is
+prepared. Google, DNS, business verification, advertising and existing routing
+of test enquiries are outside this follow-up.

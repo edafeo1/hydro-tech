@@ -11,7 +11,7 @@ export const company = {
 
 export const services = [
   {
-    slug: 'leaking-balcony-repairs', label: 'Leaking balconies', category: 'RESTORE',
+    slug: 'leaking-balcony-repairs', label: 'Leaking balconies', cardTitle: 'Balcony leak repairs', category: 'RESTORE',
     title: 'Leaking balcony repairs.<br>From the slab up.',
     subtitle: 'Remedial balcony waterproofing, from the slab to the final seal.',
     image: 'balcony.jpg', alt: 'Finished balcony with dark-grey tiles',
@@ -30,7 +30,7 @@ export const services = [
     related: ['remedial-waterproofing', 'screeding-to-falls', 'body-corporate-remediation'],
   },
   {
-    slug: 'remedial-waterproofing', label: 'Remedial waterproofing', category: 'WATERPROOF',
+    slug: 'remedial-waterproofing', label: 'Remedial waterproofing', cardTitle: 'Roof & building waterproofing', category: 'WATERPROOF',
     title: 'Remedial waterproofing.<br>Find the source.',
     subtitle: 'Rooftops, podiums, balconies and below-ground waterproofing.',
     image: 'rooftop.jpg', alt: 'Waterproofed rooftop beside a brick wall',
@@ -49,7 +49,7 @@ export const services = [
     related: ['leaking-balcony-repairs', 'screeding-to-falls', 'body-corporate-remediation'],
   },
   {
-    slug: 'facade-coatings', label: 'Facade coatings', category: 'PROTECT',
+    slug: 'facade-coatings', label: 'Facade coatings', cardTitle: 'Exterior wall repairs & coatings', category: 'PROTECT',
     title: 'Facade coatings.<br>Built on preparation.',
     subtitle: 'Facade preparation, repairs, joint sealing and protective coatings.',
     image: 'facade.jpg', alt: 'Rope access technician preparing a building facade',
@@ -68,7 +68,7 @@ export const services = [
     related: ['rope-access', 'body-corporate-remediation', 'remedial-waterproofing'],
   },
   {
-    slug: 'rope-access', label: 'Rope access', category: 'ACCESS',
+    slug: 'rope-access', label: 'Rope access', cardTitle: 'Exterior repairs at height', category: 'ACCESS',
     title: 'Rope access.<br>Reach the repair.',
     subtitle: 'Facade repairs, sealing and coatings at height.',
     image: 'hero.jpg', alt: 'Hydro-Tec technician working at height on a facade',
@@ -87,7 +87,7 @@ export const services = [
     related: ['facade-coatings', 'body-corporate-remediation', 'remedial-waterproofing'],
   },
   {
-    slug: 'screeding-to-falls', label: 'Screeding to falls', category: 'DRAIN',
+    slug: 'screeding-to-falls', label: 'Screeding to falls', cardTitle: 'Correcting surface drainage', category: 'DRAIN',
     title: 'Screeding to falls.<br>Start with the drainage.',
     subtitle: 'Correct drainage falls before the membrane and finish go down.',
     image: 'balcony-screed.jpg', alt: 'New screed laid on a balcony to correct drainage falls',
@@ -106,7 +106,7 @@ export const services = [
     related: ['leaking-balcony-repairs', 'remedial-waterproofing', 'body-corporate-remediation'],
   },
   {
-    slug: 'body-corporate-remediation', label: 'Body corporate remediation', category: 'COORDINATE',
+    slug: 'body-corporate-remediation', label: 'Body corporate remediation', cardTitle: 'Strata & body corporate repairs', category: 'COORDINATE',
     title: 'Body corporate remediation.<br>One coordinated scope.',
     subtitle: 'Coordinated remedial works for strata and body corporate buildings.',
     image: 'walkway.jpg', alt: 'Waterproofed walkway beside a commercial building',
