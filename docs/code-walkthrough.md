@@ -146,10 +146,20 @@ not sufficient. Never paste credential values into a review or issue.
 ## 9. Release and review
 
 Source changes are committed using the owner's GitHub identity. Author and
-committer are verified before moving a branch. CI runs before main is advanced.
+committer are verified before moving a branch. The tested review branch is
+`clarity-and-qa-20261102`, with the code review in pull request #1. The AWS preview
+has been updated from that branch; `main` remains unchanged pending the owner's
+merge approval.
 For the AWS backend, the generated template is validated and its change set is
 checked for replacements and validation errors before execution. Static assets
 are uploaded before HTML, then the CloudFront cache is invalidated.
+
+The live visitor check followed a balcony problem through its service page to
+the preselected contact form. A labelled test reached the test mailbox's Inbox,
+and repeating the submission returned the same reference without another email.
+The live API also accepted elapsed timing when the supplied device clock was
+seven days ahead. The public homepage capture is `website-preview.jpg`; private
+message records and enquiry references are not included in the repository.
 
 The connected app cannot activate GitHub administration settings or register an
 owner's MFA device. A disabled ruleset import is prepared in

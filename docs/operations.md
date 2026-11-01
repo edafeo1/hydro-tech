@@ -92,3 +92,16 @@ by release checks. The step-by-step code guide is `code-walkthrough.md`.
 Owner-only branch protection/MFA remain unapplied; a disabled ruleset import is
 prepared. Google, DNS, business verification, advertising and existing routing
 of test enquiries are outside this follow-up.
+
+The clarity release is deployed to the AWS preview from the tested
+`clarity-and-qa-20261102` review branch. Pull request #1 remains open and `main`
+has not been advanced. The public homepage screenshot has been refreshed.
+
+After deployment, a visitor journey from a balcony problem to its service and
+preselected enquiry form completed successfully. The labelled enquiry reached
+the test mailbox's Inbox and its targeted delivery status was `SENT`. Repeating
+the same submission with a simulated device clock seven days ahead returned the
+same reference without another email. CloudFront invalidation completed and all
+three enquiry failure alarms reported `OK`. No new AWS resources or services
+were added by this follow-up. Domain-authenticated email remains a launch
+dependency; this Inbox result is a test observation, not a delivery guarantee.
