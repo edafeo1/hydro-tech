@@ -20,7 +20,8 @@ for source in sorted(assets.glob("*")):
         width, height = image.size
         entry = {"width": width, "height": height, "variants": []}
         if source.suffix.lower() != ".png":
-            for target in sorted({min(480, width), min(1200, width)}):
+            targets = (480, 800, 1200) if source.name == "hero.jpg" else (480, 1200)
+            for target in sorted({min(target, width) for target in targets}):
                 resized = image.convert("RGB")
                 resized.thumbnail((target, round(height * target / width)), Image.Resampling.LANCZOS)
                 name = f"{source.stem}-{resized.width}.webp"

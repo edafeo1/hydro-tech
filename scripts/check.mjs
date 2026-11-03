@@ -27,7 +27,10 @@ for(const page of manifest){
     if(!/\bwidth="\d+"/.test(image)||!/\bheight="\d+"/.test(image))errors.push(`${page.url}: image without intrinsic dimensions`);
   }
   const policy=html.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)?.[1]||'';
-  if(!policy.includes('object-src &#39;none&#39;')||!policy.includes('script-src &#39;self&#39;')||policy.includes('unsafe-inline'))errors.push(`${page.url}: weak or missing content security policy`);
+  const blockedSources = ['object-src', 'base-uri', 'frame-src', 'worker-src'];
+  if (blockedSources.some(directive => !policy.includes(`${directive} &#39;none&#39;`)) || !policy.includes('script-src &#39;self&#39;') || policy.includes('unsafe-inline')) {
+    errors.push(`${page.url}: weak or missing content security policy`);
+  }
   if(/\bon\w+\s*=|\bstyle="/i.test(html))errors.push(`${page.url}: inline event/style bypasses CSP`);
   if(!/\/assets\/app\.[a-f0-9]{12}\.js/.test(html)||!/\/assets\/site\.[a-f0-9]{12}\.css/.test(html))errors.push(`${page.url}: unversioned application assets`);
   if(page.url==='/404.html'&&!html.includes('noindex,follow'))errors.push('404 must never be indexed');
