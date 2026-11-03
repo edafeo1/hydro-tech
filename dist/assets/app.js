@@ -198,6 +198,12 @@ if (form) {
         const success = $('#enquiry-success');
         success.hidden = false;
         $('#enquiry-reference').textContent = `Your reference: ${payload.reference}`;
+        const attachmentsLink = $('#enquiry-attachments');
+        if (attachmentsLink) {
+          const mailto = new URL(attachmentsLink.href);
+          mailto.search = `?subject=${encodeURIComponent(`Photos or report for enquiry ${payload.reference}`)}`;
+          attachmentsLink.href = mailto.href;
+        }
         success.scrollIntoView({block:'start',behavior:reducedMotion()?'instant':'smooth'});
         $('#enquiry-success-title').focus({preventScroll:true});
         // Conversion tracking must listen only after the backend confirms receipt.
